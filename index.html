@@ -131,7 +131,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .modal-note{background:var(--accent-lt);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 14px;font-size:12.5px;color:var(--accent);margin-top:16px;line-height:1.5}
 .api-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
 .api-item{background:var(--surface2);border-radius:8px;padding:10px 12px}
-.api-method{font-family:'Courier New',monospace;font-size:11.5px;font-weight:700;color:var(--accent);margin-bottom:3px}
+.api-method{font-size:12px;font-weight:650;color:var(--accent);margin-bottom:3px}
 .api-desc{font-size:12.5px;color:var(--text2);line-height:1.4}
 .api-params{font-size:11px;color:var(--muted);margin-top:3px;font-family:'Courier New',monospace}
 h4{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;margin-top:16px}
@@ -944,22 +944,22 @@ h4:first-child{margin-top:0}
 /* INT TABLE */
 const INT_ROWS = [
   // name, desc, robots: [R1,R2,R3,R4,R5,R6, R7,R8,R9,R10,R11,R12]
-  { name:'Поиск заказов по Caller ID',  desc:'GetOrdersByPhone — находит накладные по номеру входящего; исключает ручной ввод трек-номера',                 robots:[1,1,1,0,0,1, 0,0,0,0,0,0] },
-  { name:'Информация о заказе',         desc:'GetOrderInfo(TrackNumber) — статус, маршрут, вес, дата прибытия, терминал, сумма к оплате',                    robots:[1,1,1,0,1,1, 1,1,1,1,0,0] },
-  { name:'Справочник терминалов',       desc:'GetTerminalInfo(City, ID) — адрес и режим работы с учётом праздников',                                         robots:[1,1,1,0,0,0, 1,0,1,0,0,0] },
-  { name:'Поиск ближайшего терминала',  desc:'FindNearestTerminal(City) — ПВЗ рядом с городом без терминала (Реутов → Котельники)',                           robots:[0,1,0,0,0,0, 0,0,0,0,0,0] },
-  { name:'Расчёт доставки до двери',    desc:'CalculateDelivery(City,Weight,Volume) — стоимость адресной доставки от терминала для апсейла',                  robots:[1,1,1,0,0,0, 1,0,1,0,0,0] },
-  { name:'Калькулятор тарифов',         desc:'CalculateRate(from, to, weight, volume) — стоимость новой перевозки между городами',                            robots:[0,0,0,1,1,0, 0,0,0,0,1,0] },
-  { name:'Отправка SMS',                desc:'SendSMS(Phone, Text) — геометка с адресом терминала, ссылка на Яндекс.Карты / 2GIS',                            robots:[1,1,0,0,0,0, 1,1,1,0,1,1] },
-  { name:'Создание заявки логисту',     desc:'Create_Logistician_Request — тикет на перезвон: order_id, phone, alt_phone, is_urgent',                         robots:[0,0,1,0,1,1, 0,1,1,0,1,0] },
-  { name:'Проверка статуса оплаты',     desc:'Check_Payment_Status(order_id) — поступила ли оплата перед оформлением',                                        robots:[0,0,1,0,1,0, 0,0,0,0,0,0] },
-  { name:'Создание новой накладной',    desc:'CreateOrder(params) — оформление заявки на перевозку через API без участия менеджера',                          robots:[0,0,0,0,1,0, 0,0,0,0,0,0] },
-  { name:'Регистрация претензии',       desc:'CreateClaim(order_id, type, description) — тикет в отдел претензий по утере или повреждению',                   robots:[0,0,0,0,0,1, 0,0,0,1,0,0] },
-  { name:'Изменение / отмена заказа',   desc:'UpdateOrder(TrackNumber, params) — отмена адресной доставки, изменение параметров',                             robots:[1,0,1,0,0,0, 0,1,0,0,0,0] },
-  { name:'Перевод с контекстом',        desc:'TransferCall(SIP_Trunk, Context) — перевод на оператора с передачей имени, интента и данных груза',              robots:[1,1,1,1,1,1, 1,1,1,1,1,1] },
-  { name:'RAG / База знаний',           desc:'Векторный поиск по FAQ: правила выдачи, доверенности, обрешётка, тарифная документация',                        robots:[0,1,0,1,0,1, 0,0,0,0,1,1] },
-  { name:'SIP-телефония / АТС',         desc:'Caller ID, очереди операторов, передача текстового контекста при переводе звонка',                               robots:[1,1,1,1,1,1, 1,1,1,1,1,1] },
-  { name:'Маршрутизация звонков (IVR)', desc:'Routing profile в АТС/IVR — правила входящего потока: какой вызов идёт к роботу, fallback на оператора, перевод по теме', robots:[1,1,1,1,1,1, 1,1,1,1,1,1] },
+  { name:'Поиск заказов по Caller ID',  desc:'Поиск накладных по номеру входящего звонка — клиенту не нужно вводить трек-номер вручную',                    robots:[1,1,1,0,0,1, 0,0,0,0,0,0] },
+  { name:'Информация о заказе',         desc:'Запрос статуса, маршрута, веса, даты прибытия, терминала и суммы к оплате по накладной',                        robots:[1,1,1,0,1,1, 1,1,1,1,0,0] },
+  { name:'Справочник терминалов',       desc:'Запрос адреса и режима работы терминала с учётом праздников и переносов',                                        robots:[1,1,1,0,0,0, 1,0,1,0,0,0] },
+  { name:'Поиск ближайшего терминала',  desc:'Поиск ближайшего ПВЗ к городу без собственного терминала (например, Реутов → Котельники)',                      robots:[0,1,0,0,0,0, 0,0,0,0,0,0] },
+  { name:'Расчёт доставки до двери',    desc:'Расчёт стоимости адресной доставки от терминала до двери клиента',                                               robots:[1,1,1,0,0,0, 1,0,1,0,0,0] },
+  { name:'Калькулятор тарифов',         desc:'Расчёт стоимости перевозки между городами по направлению, весу и объёму',                                        robots:[0,0,0,1,1,0, 0,0,0,0,1,0] },
+  { name:'Отправка SMS',                desc:'Отправка геометки с адресом терминала и ссылкой на Яндекс.Карты / 2GIS',                                         robots:[1,1,0,0,0,0, 1,1,1,0,1,1] },
+  { name:'Создание заявки логисту',     desc:'Создание тикета на перезвон логисту с данными клиента и степенью срочности',                                     robots:[0,0,1,0,1,1, 0,1,1,0,1,0] },
+  { name:'Проверка статуса оплаты',     desc:'Проверка факта поступления оплаты перед оформлением заявки',                                                     robots:[0,0,1,0,1,0, 0,0,0,0,0,0] },
+  { name:'Создание новой накладной',    desc:'Оформление заявки на новую перевозку через API без участия менеджера',                                            robots:[0,0,0,0,1,0, 0,0,0,0,0,0] },
+  { name:'Регистрация претензии',       desc:'Создание тикета в отдел претензий по факту утери, задержки или повреждения груза',                               robots:[0,0,0,0,0,1, 0,0,0,1,0,0] },
+  { name:'Изменение / отмена заказа',   desc:'Отмена или изменение параметров адресной доставки без участия оператора',                                        robots:[1,0,1,0,0,0, 0,1,0,0,0,0] },
+  { name:'Перевод с контекстом',        desc:'Перевод звонка на оператора с передачей имени клиента, интента и данных по грузу',                               robots:[1,1,1,1,1,1, 1,1,1,1,1,1] },
+  { name:'RAG / База знаний',           desc:'Поиск по базе FAQ: правила выдачи, доверенности, обрешётка, тарифная документация',                              robots:[0,1,0,1,0,1, 0,0,0,0,1,1] },
+  { name:'SIP-телефония / АТС',         desc:'Определение номера входящего, очереди операторов, передача текстового контекста при переводе',                   robots:[1,1,1,1,1,1, 1,1,1,1,1,1] },
+  { name:'Маршрутизация звонков (IVR)', desc:'Правила распределения звонков: входящий поток → нужный робот, fallback → оператор, перевод по тематике',         robots:[1,1,1,1,1,1, 1,1,1,1,1,1] },
 ];
 
 (function buildIntTable(){
@@ -1018,12 +1018,12 @@ const MODALS = {
 </div>
 `,`<h4>API-методы</h4>
 <div class="api-list">
-<div class="api-item"><div class="api-method">GetOrdersByPhone(phone)</div><div class="api-desc">1 заказ → проактивное предложение. Несколько → запрос трек-номера.</div><div class="api-params">return: [{order_id, route, status, arrival_date, terminal_id}]</div></div>
-<div class="api-item"><div class="api-method">GetOrderInfo(TrackNumber)</div><div class="api-desc">Статус, маршрут, вес, дата прибытия, терминал, сумма.</div><div class="api-params">return: {status, route, weight, arrival_date, terminal_id, amount_due, delay_flag}</div></div>
-<div class="api-item"><div class="api-method">GetTerminalInfo(City, Terminal_ID)</div><div class="api-desc">Адрес и режим работы с учётом праздников.</div><div class="api-params">return: {address, schedule_today, geo_link}</div></div>
-<div class="api-item"><div class="api-method">SendSMS(Phone, Text)</div><div class="api-desc">Геометка по запросу клиента.</div><div class="api-params">return: {status}</div></div>
-<div class="api-item"><div class="api-method">UpdateOrder(TrackNumber, {cancel_delivery:true})</div><div class="api-desc">Опционально: отмена адресной доставки без оператора.</div><div class="api-params">return: {success: bool}</div></div>
-<div class="api-item"><div class="api-method">TransferCall(SIP_Trunk, Context)</div><div class="api-desc">Перевод при претензии, задержке или нераспознанном трек-номере.</div><div class="api-params">context: {intent, order_id, client_name}</div></div>
+<div class="api-item"><div class="api-method">Поиск заказов по номеру телефона</div><div class="api-desc">1 заказ → проактивное предложение. Несколько → запрос трек-номера.</div></div>
+<div class="api-item"><div class="api-method">Запрос данных по накладной</div><div class="api-desc">Статус, маршрут, вес, дата прибытия, терминал, сумма.</div></div>
+<div class="api-item"><div class="api-method">Запрос информации о терминале</div><div class="api-desc">Адрес и режим работы с учётом праздников.</div></div>
+<div class="api-item"><div class="api-method">Отправка SMS с геометкой</div><div class="api-desc">Геометка по запросу клиента.</div></div>
+<div class="api-item"><div class="api-method">Отмена адресной доставки</div><div class="api-desc">Опционально: без участия оператора.</div></div>
+<div class="api-item"><div class="api-method">Перевод звонка на оператора</div><div class="api-desc">При претензии, задержке или нераспознанном трек-номере.</div></div>
 </div>
 `,`<h4>Идентификация</h4>
 <ul class="q-list">
@@ -1084,11 +1084,11 @@ const MODALS = {
 </div>
 `,`<h4>API-методы</h4>
 <div class="api-list">
-<div class="api-item"><div class="api-method">GetTerminalInfo(City, Terminal_ID)</div><div class="api-desc">Адрес + режим работы на неделю с учётом праздников.</div><div class="api-params">return: {address, schedule_week, open_today: bool, geo_link}</div></div>
-<div class="api-item"><div class="api-method">FindNearestTerminal(City)</div><div class="api-desc">Ближайший ПВЗ к городу без терминала.</div><div class="api-params">return: {nearest_city, terminal_id, distance_km, address}</div></div>
-<div class="api-item"><div class="api-method">GetOrdersByPhone + GetOrderInfo</div><div class="api-desc">Проактивная идентификация груза и выдача точного терминала.</div><div class="api-params">return: {terminal_id, status, amount_due}</div></div>
-<div class="api-item"><div class="api-method">CalculateDelivery(City, Weight, Volume)</div><div class="api-desc">Расчёт от терминала до двери для апсейла.</div><div class="api-params">return: {price, eta}</div></div>
-<div class="api-item"><div class="api-method">SendSMS(Phone, Text)</div><div class="api-desc">Геометка для навигации.</div><div class="api-params">return: {status}</div></div>
+<div class="api-item"><div class="api-method">Запрос информации о терминале</div><div class="api-desc">Адрес + режим работы на неделю с учётом праздников.</div></div>
+<div class="api-item"><div class="api-method">Поиск ближайшего терминала</div><div class="api-desc">Ближайший ПВЗ к городу без терминала.</div></div>
+<div class="api-item"><div class="api-method">Поиск заказов + запрос данных по накладной</div><div class="api-desc">Проактивная идентификация груза и выдача точного терминала.</div></div>
+<div class="api-item"><div class="api-method">Расчёт стоимости доставки до двери</div><div class="api-desc">Расчёт от терминала до двери для апсейла.</div></div>
+<div class="api-item"><div class="api-method">Отправка SMS с геометкой</div><div class="api-desc">Геометка для навигации.</div></div>
 </div>
 `,`<h4>Интеграция и расчёт</h4>
 <ul class="q-list">
@@ -1141,11 +1141,11 @@ const MODALS = {
 </div>
 `,`<h4>API-методы</h4>
 <div class="api-list">
-<div class="api-item"><div class="api-method">Get_Order_Status(phone, order_id, full_name, INN)</div><div class="api-desc">Расширенный поиск. Возвращает: статус, тип (доставка/забор), слот, is_delivery_available, transfer_cost.</div><div class="api-params">return: {status, delivery_type, slot, is_delivery_available: bool, transfer_cost}</div></div>
-<div class="api-item"><div class="api-method">Create_Logistician_Request(order_id, phone, alt_phone, comment, is_urgent)</div><div class="api-desc">Тикет для логиста с флагом срочности.</div><div class="api-params">params: order_id*, phone*, alt_phone?, comment?, is_urgent: bool</div></div>
-<div class="api-item"><div class="api-method">Check_Payment_Status(order_id)</div><div class="api-desc">Проверка оплаты перед созданием заявки.</div><div class="api-params">return: {paid: bool, amount, paid_date}</div></div>
-<div class="api-item"><div class="api-method">CalculateDelivery(City, Weight, Volume)</div><div class="api-desc">Стоимость доставки + перемещения со второстепенного склада.</div><div class="api-params">return: {delivery_price, transfer_price, total, eta}</div></div>
-<div class="api-item"><div class="api-method">UpdateOrder(TrackNumber, {cancel_delivery:true})</div><div class="api-desc">Отмена доставки при отказе клиента.</div><div class="api-params">return: {success: bool, penalty_applied: bool}</div></div>
+<div class="api-item"><div class="api-method">Расширенный запрос статуса заказа</div><div class="api-desc">Расширенный поиск. Возвращает: статус, тип (доставка/забор), слот, is_delivery_available, transfer_cost.</div></div>
+<div class="api-item"><div class="api-method">Создание заявки логисту</div><div class="api-desc">Тикет для логиста с флагом срочности.</div></div>
+<div class="api-item"><div class="api-method">Проверка статуса оплаты</div><div class="api-desc">Проверка перед созданием заявки.</div></div>
+<div class="api-item"><div class="api-method">Расчёт стоимости доставки до двери</div><div class="api-desc">Стоимость + перемещение со второстепенного склада.</div></div>
+<div class="api-item"><div class="api-method">Отмена адресной доставки</div><div class="api-desc">При отказе клиента от доставки.</div></div>
 </div>
 `,`<h4>Бизнес-логика</h4>
 <ul class="q-list">
@@ -1195,9 +1195,9 @@ const MODALS = {
 </div>
 `,`<h4>API-методы</h4>
 <div class="api-list">
-<div class="api-item"><div class="api-method">CalculateRate(from, to, weight, volume, service_type)</div><div class="api-desc">Расчёт тарифа. Возвращает стоимость, сроки, доступность маршрута.</div><div class="api-params">return: {price, transit_days, is_available: bool}</div></div>
-<div class="api-item"><div class="api-method">TransferCall(SIP_Trunk, Context)</div><div class="api-desc">Перевод на специалиста или международный отдел с данными.</div><div class="api-params">context: {client_name, city_from, city_to, weight, volume, is_international}</div></div>
-<div class="api-item"><div class="api-method">GetTerminalInfo(City) — опционально</div><div class="api-desc">Справочный ответ о режиме без перевода.</div><div class="api-params">return: {schedule_today, address}</div></div>
+<div class="api-item"><div class="api-method">Расчёт тарифа перевозки</div><div class="api-desc">Расчёт тарифа. Возвращает стоимость, сроки, доступность маршрута.</div></div>
+<div class="api-item"><div class="api-method">Перевод звонка на специалиста</div><div class="api-desc">Перевод на специалиста или международный отдел с данными.</div></div>
+<div class="api-item"><div class="api-method">Справочный запрос о терминале (опционально)</div><div class="api-desc">Справочный ответ о режиме без перевода.</div></div>
 </div>
 <h4>SIP-очереди</h4>
 <div class="api-list">
@@ -1245,11 +1245,11 @@ const MODALS = {
 </div>
 `,`<h4>API-методы</h4>
 <div class="api-list">
-<div class="api-item"><div class="api-method">CalculateRate(from, to, weight, volume)</div><div class="api-desc">Предварительный расчёт тарифа перед созданием заявки.</div><div class="api-params">return: {price, transit_days, is_available: bool}</div></div>
-<div class="api-item"><div class="api-method">CreateOrder(from_city, to_city, weight, volume, sender_phone, pickup_address?)</div><div class="api-desc">Создание накладной через API без участия менеджера.</div><div class="api-params">return: {order_id, track_number, pickup_date?}</div></div>
-<div class="api-item"><div class="api-method">Create_Logistician_Request(order_id, phone, comment)</div><div class="api-desc">Заявка на забор груза — логист согласует дату и время.</div><div class="api-params">params: order_id*, phone*, comment?</div></div>
-<div class="api-item"><div class="api-method">Check_Payment_Status(invoice_id)</div><div class="api-desc">Проверка оплаты по счёту.</div><div class="api-params">return: {paid: bool, amount}</div></div>
-<div class="api-item"><div class="api-method">TransferCall(SIP_Trunk, Context)</div><div class="api-desc">Передача сложных запросов специалисту.</div><div class="api-params">context: {client_name, intent, cargo_type, route}</div></div>
+<div class="api-item"><div class="api-method">Расчёт тарифа перевозки</div><div class="api-desc">Предварительный расчёт перед созданием заявки.</div></div>
+<div class="api-item"><div class="api-method">Создание новой накладной</div><div class="api-desc">Создание накладной через API без участия менеджера.</div></div>
+<div class="api-item"><div class="api-method">Заявка на забор груза</div><div class="api-desc">Заявка на забор груза — логист согласует дату и время.</div></div>
+<div class="api-item"><div class="api-method">Проверка оплаты по счёту</div><div class="api-desc">Проверка оплаты по счёту.</div></div>
+<div class="api-item"><div class="api-method">Перевод звонка на специалиста</div><div class="api-desc">Передача сложных запросов специалисту.</div></div>
 </div>
 `,`<h4>Оформление заявок</h4>
 <ul class="q-list">
@@ -1297,11 +1297,11 @@ const MODALS = {
 </div>
 `,`<h4>API-методы</h4>
 <div class="api-list">
-<div class="api-item"><div class="api-method">GetOrderInfo(TrackNumber)</div><div class="api-desc">Верификация накладной и данные для претензии (маршрут, вес, стоимость, дата получения).</div><div class="api-params">return: {status, route, weight, delivery_date, declared_value}</div></div>
-<div class="api-item"><div class="api-method">CreateClaim(order_id, claim_type, description, photo_links?)</div><div class="api-desc">Регистрация претензии. Тип: loss/damage/delay.</div><div class="api-params">return: {claim_id, instructions, deadline_days}</div></div>
-<div class="api-item"><div class="api-method">GetClaimStatus(claim_id)</div><div class="api-desc">Статус ранее поданной претензии.</div><div class="api-params">return: {status, assigned_specialist, next_step}</div></div>
-<div class="api-item"><div class="api-method">Create_Logistician_Request(order_id, ..., is_urgent:true)</div><div class="api-desc">Для критических случаев — параллельно с претензией.</div><div class="api-params">params: order_id*, phone*, is_urgent: true</div></div>
-<div class="api-item"><div class="api-method">TransferCall(SIP_Trunk, Context)</div><div class="api-desc">Перевод при финансовых спорах.</div><div class="api-params">context: {claim_type, order_id, damage_description}</div></div>
+<div class="api-item"><div class="api-method">Запрос данных по накладной</div><div class="api-desc">Верификация накладной и данные для претензии (маршрут, вес, стоимость, дата получения).</div></div>
+<div class="api-item"><div class="api-method">Регистрация претензии</div><div class="api-desc">Регистрация претензии. Тип: loss/damage/delay.</div></div>
+<div class="api-item"><div class="api-method">Проверка статуса претензии</div><div class="api-desc">Статус ранее поданной претензии.</div></div>
+<div class="api-item"><div class="api-method">Срочная заявка логисту</div><div class="api-desc">Для критических случаев — параллельно с претензией.</div></div>
+<div class="api-item"><div class="api-method">Перевод звонка на специалиста</div><div class="api-desc">При финансовых спорах и эскалациях.</div></div>
 </div>
 `,`<h4>Процедура и полномочия</h4>
 <ul class="q-list">
