@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КВИНТ × ТК «КИТ» — Голосовые роботы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --sidebar-w:248px;
+  --bg:#F5F4F0;--surface:#FFFFFF;--surface2:#EDECE7;
+  --border:#E2DFD5;--border2:#D5D1C5;
+  --text:#18181B;--text2:#52504A;--muted:#8C8981;
+  --accent:#1740CC;--accent-lt:#EBF0FF;--accent-mid:#B8C8FF;
+  --in-color:#1740CC;--in-bg:#EBF0FF;
+  --out-color:#7C3AED;--out-bg:#F3EEFF;
+  --gen-color:#0F6B4F;--gen-bg:#E8F8F2;
+  --scr-color:#B45309;--scr-bg:#FFF8EB;
+  --p1-color:#DC2626;--p1-bg:#FFF0F0;
+  --p2-color:#D97706;--p2-bg:#FFFBEB;
+  --p3-color:#4B5563;--p3-bg:#F3F4F6;
+  --shadow-xs:0 1px 3px rgba(0,0,0,.05);
+  --shadow-sm:0 2px 8px rgba(0,0,0,.07);
+  --shadow-md:0 6px 24px rgba(0,0,0,.10);
+  --r:12px
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased;display:flex;min-height:100vh}
+.progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:9999;transition:width .1s linear;width:0}
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);height:100vh;position:sticky;top:0;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;z-index:100}
+.sidebar::-webkit-scrollbar{display:none}
+.sidebar-brand{padding:28px 24px 20px;border-bottom:1px solid var(--border)}
+.brand-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.brand-name{font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:var(--text);line-height:1.15}
+.brand-name span{color:var(--accent)}
+.brand-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.nav-wrap{padding:16px 14px;flex:1}
+.nav-group-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 8px;margin-bottom:4px;margin-top:12px}
+.nav-group-label:first-child{margin-top:0}
+.nav-list{list-style:none}
+.nav-item a{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:13px;font-weight:450;transition:background .15s,color .15s}
+.nav-item a:hover{background:var(--surface2);color:var(--text)}
+.nav-item a.active{background:var(--accent-lt);color:var(--accent);font-weight:600}
+.nav-icon{font-size:14px;width:18px;text-align:center;opacity:.7;flex-shrink:0}
+.nav-item a.active .nav-icon{opacity:1}
+.nav-badge{margin-left:auto;background:var(--surface2);color:var(--muted);border-radius:100px;font-size:10px;font-weight:700;padding:1px 6px}
+.nav-item a.active .nav-badge{background:var(--accent-mid);color:var(--accent)}
+.nav-orb-wrap{display:flex;justify-content:center;padding:36px 0 8px}
+.nav-orb{position:relative;width:130px;height:130px;cursor:pointer;border:none;background:none;padding:0;border-radius:50%;transition:transform .25s,filter .25s;-webkit-tap-highlight-color:transparent}
+.nav-orb-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:13px;font-weight:600;text-align:center;line-height:1.35;pointer-events:none;text-shadow:0 1px 4px rgba(80,60,140,.5);letter-spacing:.02em}
+.nav-orb img{width:100%;height:100%;display:block;border-radius:50%;will-change:transform,filter;transform-origin:center center;filter:drop-shadow(0 0 10px rgba(130,110,200,.3))}
+.nav-orb:hover{transform:scale(1.18);filter:drop-shadow(0 0 12px rgba(130,110,200,.5))}
+.sidebar-footer{padding:14px 24px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);line-height:1.7}
+.sidebar-footer a{color:var(--accent);text-decoration:none}
+.sidebar-footer strong{color:var(--text)}
+.main{flex:1;min-width:0;padding:52px 56px}
+.page-section{margin-bottom:80px;scroll-margin-top:24px}
+.page-section:last-child{margin-bottom:0}
+.section-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.section-eyebrow::after{content:'';display:block;width:24px;height:1.5px;background:var(--accent-mid);border-radius:2px}
+.section-title{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(24px,2.8vw,34px);font-weight:400;line-height:1.15;color:var(--text);margin-bottom:6px}
+.section-desc{color:var(--muted);font-size:14px;max-width:600px;margin-bottom:32px}
+.filter-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:28px}
+.filter-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit}
+.filter-btn:hover{border-color:var(--border2);background:var(--surface2)}
+.filter-btn.f-active-all{border-color:var(--text);background:var(--text);color:#fff}
+.filter-btn.f-active-in{border-color:var(--in-color);background:var(--in-bg);color:var(--in-color)}
+.filter-btn.f-active-p1{border-color:var(--p1-color);background:var(--p1-bg);color:var(--p1-color)}
+.filter-btn.f-active-p2{border-color:var(--p2-color);background:var(--p2-bg);color:var(--p2-color)}
+.filter-btn.f-active-p3{border-color:var(--p3-color);background:var(--p3-bg);color:var(--p3-color)}
+.filter-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.robots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:20px}
+.rcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-xs);display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s}
+.rcard:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.rcard-stripe{height:3px;width:100%;flex-shrink:0}
+.rcard[data-dir="in"] .rcard-stripe{background:linear-gradient(90deg,var(--in-color) 0%,#5B8AFF 100%)}
+.rcard[data-dir="out"] .rcard-stripe{background:linear-gradient(90deg,var(--out-color) 0%,#A78BFA 100%)}
+.rcard-body{padding:20px 22px 22px;flex:1;display:flex;flex-direction:column;gap:14px}
+.rcard-header{display:flex;align-items:flex-start;gap:14px}
+.rcard-num{font-family:'Instrument Serif',serif;font-size:28px;font-weight:400;color:var(--border2);line-height:1;flex-shrink:0;width:30px;text-align:right;margin-top:3px}
+.rcard-title{flex:1}
+.rcard-name{font-size:15px;font-weight:650;color:var(--text);line-height:1.3;margin-bottom:2px}
+.rcard-aud{font-size:11.5px;color:var(--muted)}
+.rcard-tags{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.rtag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.01em;white-space:nowrap;border:1px solid transparent}
+.rtag-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.rtag-in{background:var(--in-bg);color:var(--in-color);border-color:var(--accent-mid)}
+.rtag-in .rtag-dot{background:var(--in-color)}
+.rtag-out{background:var(--out-bg);color:var(--out-color);border-color:#C4B5FD}
+.rtag-out .rtag-dot{background:var(--out-color)}
+.rtag-gen{background:var(--gen-bg);color:var(--gen-color);border-color:#6EE7C7}
+.rtag-gen .rtag-dot{background:var(--gen-color)}
+.rtag-scr{background:var(--scr-bg);color:var(--scr-color);border-color:#FCD34D}
+.rtag-scr .rtag-dot{background:var(--scr-color)}
+.priority-badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:700;margin-left:auto}
+.priority-badge.p1{background:var(--p1-bg);color:var(--p1-color)}
+.priority-badge.p2{background:var(--p2-bg);color:var(--p2-color)}
+.priority-badge.p3{background:var(--p3-bg);color:var(--p3-color)}
+.rfield-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.trigger-chip{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:12.5px;color:var(--text2);line-height:1.45}
+.rcard-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
+.link-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit}
+.link-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-lt)}
+.lb-icon{font-size:13px}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:16px;width:100%;max-width:680px;max-height:88vh;box-shadow:0 20px 60px rgba(0,0,0,.2);overflow:hidden;display:flex;flex-direction:column}
+.modal-header{padding:22px 28px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
+.modal-eyebrow{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.modal-title{font-family:'Instrument Serif',serif;font-size:22px;font-weight:400;line-height:1.2;margin-bottom:4px}
+.modal-robot{font-size:12px;color:var(--muted)}
+.modal-close{position:absolute;top:16px;right:20px;background:var(--surface2);border:none;border-radius:6px;width:28px;height:28px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s}
+.modal-close:hover{background:var(--border);color:var(--text)}
+.modal-header{position:relative}
+.modal-body{padding:0;max-height:calc(82vh - 90px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.modal-tabs{display:flex;gap:2px;padding:12px 20px 0;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:2}
+.mtab{padding:8px 14px;font-size:12px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;transition:color .15s,border-color .15s;border-radius:6px 6px 0 0;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
+.mtab:hover{color:var(--text)}
+.mtab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.mtab-panel{display:none;padding:22px 28px 28px}
+.mtab-panel.active{display:block}
+.modal-simple-body{padding:22px 28px 28px}
+.q-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.q-item{display:flex;gap:10px;align-items:flex-start}
+.q-num{background:var(--surface2);color:var(--muted);border-radius:6px;font-size:10px;font-weight:700;padding:3px 6px;flex-shrink:0;min-width:24px;text-align:center;margin-top:1px}
+.q-text{font-size:13px;color:var(--text);line-height:1.5}
+.q-text em{display:block;font-size:11.5px;color:var(--muted);font-style:normal;margin-top:3px}
+.modal-note{background:var(--accent-lt);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 14px;font-size:12.5px;color:var(--accent);margin-top:16px;line-height:1.5}
+.api-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.api-item{background:var(--surface2);border-radius:8px;padding:10px 12px}
+.api-method{font-family:'Courier New',monospace;font-size:11.5px;font-weight:700;color:var(--accent);margin-bottom:3px}
+.api-desc{font-size:12.5px;color:var(--text2);line-height:1.4}
+.api-params{font-size:11px;color:var(--muted);margin-top:3px;font-family:'Courier New',monospace}
+h4{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;margin-top:16px}
+h4:first-child{margin-top:0}
+.placeholder-block{background:var(--surface2);border:2px dashed var(--border2);border-radius:var(--r);padding:48px 32px;text-align:center}
+.placeholder-block p{color:var(--muted);font-size:13px;margin-top:8px}
+
+/* contacts */
+.contacts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-top:32px}
+.contact-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:24px;display:flex;gap:18px;align-items:stretch;transition:box-shadow .18s,transform .18s;position:relative;overflow:hidden}
+.contact-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--accent) 0%,#A78BFA 100%)}
+.contact-card:hover{box-shadow:0 4px 20px rgba(79,70,229,.1);transform:translateY(-2px)}
+.contact-avatar{width:52px;height:52px;min-width:52px;border-radius:14px;background:linear-gradient(135deg,var(--accent) 0%,#818CF8 100%);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;letter-spacing:.03em;font-family:'Inter',sans-serif}
+.contact-info{flex:1;min-width:0;display:flex;flex-direction:column}
+.contact-name{font-size:15px;font-weight:650;color:var(--text);line-height:1.3;margin-bottom:3px}
+.contact-role{font-size:12px;color:var(--text2);line-height:1.4;margin-bottom:12px;flex:1}
+.contact-links{display:flex;flex-direction:column;gap:6px;margin-top:auto}
+.contact-link{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;text-decoration:none;border-radius:6px;padding:5px 9px;transition:background .15s,color .15s;width:fit-content}
+.contact-link-email{color:var(--accent);background:#EEF2FF}
+.contact-link-email:hover{background:#E0E7FF;color:#3730A3}
+.contact-link-phone{color:#0F6B4F;background:#ECFDF5}
+.contact-link-phone:hover{background:#D1FAE5;color:#065F46}
+.contacts-footer{margin-top:36px;padding-top:24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.contacts-site-link{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text2);text-decoration:none;padding:8px 16px;border:1px solid var(--border);border-radius:8px;transition:all .15s}
+.contacts-site-link:hover{border-color:var(--accent);color:var(--accent);background:#F5F3FF}
+.voice-samples-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow-xs);overflow:hidden}
+.voice-id{font-family:'Courier New',monospace;font-size:12px;color:var(--accent);background:var(--accent-lt);padding:2px 6px;border-radius:4px}
+.voice-play-btn{min-width:44px;padding:8px 12px;font-size:16px}
+.voice-play-btn.loading{opacity:.6;pointer-events:none}
+.voice-play-btn.playing{background:var(--gen-bg);border-color:var(--gen-color);color:var(--gen-color)}
+.voice-samples-hint{font-size:12px;color:var(--muted);margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+
+/* Robot types / scenarios block */
+.robot-types-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px}
+.robot-type-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px 22px;box-shadow:var(--shadow-xs);display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s}
+.robot-type-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.robot-type-title{font-size:16px;font-weight:650;color:var(--text);margin-bottom:10px;line-height:1.3}
+.robot-type-desc{font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:16px;flex:1}
+.robot-type-visual{margin-bottom:16px;border-radius:12px;overflow:hidden;background:var(--surface2);border:1px solid var(--border);height:180px;display:flex;align-items:center;justify-content:center;position:relative}
+.robot-type-visual img:not(.robot-type-orb-img),.robot-type-visual video{width:100%;height:100%;object-fit:cover;display:block}
+.robot-type-visual.tone-in{background:linear-gradient(135deg,var(--accent-lt) 0%,#E8F0FF 100%);border-color:var(--accent-mid)}
+.robot-type-visual.tone-out{background:linear-gradient(135deg,var(--out-bg) 0%,#F0E8FF 100%);border-color:#C4B5FD}
+.robot-type-visual.tone-gen{background:linear-gradient(135deg,var(--gen-bg) 0%,#E0F7EF 100%);border-color:#6EE7C7}
+.robot-type-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:10px;font-weight:600;color:rgba(255,255,255,.9);text-align:center;white-space:nowrap;text-shadow:0 1px 4px rgba(80,60,140,.5);z-index:2;pointer-events:none}
+.robot-type-visual-orb{display:flex;align-items:center;justify-content:center;position:relative}
+.robot-type-orb-img{width:160px;height:160px;object-fit:contain;animation:orb-spin 22s linear infinite;filter:drop-shadow(0 0 16px rgba(130,110,200,.35))}
+.robot-type-list{list-style:none;display:grid;gap:8px}
+.robot-type-list li{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:12.5px;color:var(--text2);line-height:1.4}
+@media(max-width:900px){.robot-types-grid{grid-template-columns:1fr}}
+
+/* additional robots block */
+.add-robots-header{margin:60px 0 28px}
+.add-robots-eyebrow{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--out-color);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.add-robots-eyebrow::after{content:'';display:block;width:24px;height:1.5px;background:#C4B5FD;border-radius:2px}
+.add-robots-title{font-family:'Instrument Serif',serif;font-size:clamp(20px,2.2vw,28px);font-weight:400;color:var(--text);margin-bottom:6px}
+.add-robots-sub{font-size:13.5px;color:var(--text2);max-width:640px;line-height:1.6}
+.phrase-bubble{background:linear-gradient(135deg,#F3EEFF 0%,#EAF0FF 100%);border:1px solid #C4B5FD;border-radius:10px;padding:10px 14px;font-size:12.5px;color:var(--text);line-height:1.5;font-style:italic;position:relative}
+.phrase-bubble::before{content:'🤖';font-size:13px;position:absolute;top:-8px;left:10px;background:var(--surface);padding:0 3px;font-style:normal}
+/* Voice orb mini button on card */
+.rcard-voice-orb{position:absolute;bottom:14px;right:14px;width:44px;height:44px;cursor:pointer;border:none;background:none;padding:0;z-index:2;transition:transform .2s,filter .2s;-webkit-tap-highlight-color:transparent}
+.rcard-voice-orb img{width:100%;height:100%;display:block;animation:orb-spin 22s linear infinite}
+.rcard-voice-orb:hover{transform:scale(1.15);filter:drop-shadow(0 0 8px rgba(130,110,200,.4))}
+@keyframes orb-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* Voice modal */
+.voice-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;align-items:center;justify-content:center;padding:20px}
+.voice-modal-overlay.open{display:flex}
+.voice-modal{background:var(--surface);border-radius:20px;width:100%;max-width:1280px;max-height:90vh;box-shadow:0 20px 60px rgba(0,0,0,.22);overflow:hidden;display:flex;flex-direction:column}
+.voice-modal-header{padding:22px 28px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.voice-modal-title{font-family:'Instrument Serif',serif;font-size:20px;font-weight:400;color:var(--text)}
+.voice-modal-close{background:var(--surface2);border:none;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s}
+.voice-modal-close:hover{background:var(--border);color:var(--text)}
+.voice-modal-body{display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;max-height:calc(90vh - 70px)}
+.voice-widget-area{display:flex;align-items:center;gap:24px;padding:28px;background:linear-gradient(135deg,#f8f9fc 0%,#f0f4ff 100%);border-bottom:1px solid var(--border);flex-shrink:0;position:sticky;top:0;z-index:3}
+.voice-orb-container{position:relative;width:120px;height:120px;flex-shrink:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.voice-orb-container::before{content:'';position:absolute;inset:-40px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .6s,background .6s}
+.voice-orb-container[data-state="connecting"]::before{opacity:1;background:radial-gradient(circle,rgba(140,140,255,.15) 0%,transparent 70%);animation:v-breathe 3s ease-in-out infinite}
+.voice-orb-container[data-state="listening"]::before{opacity:1;background:radial-gradient(circle,rgba(80,180,255,.2) 0%,transparent 70%);animation:v-breathe 4s ease-in-out infinite}
+.voice-orb-container[data-state="speaking"]::before{opacity:1;background:radial-gradient(circle,rgba(155,90,255,.25) 0%,transparent 70%);animation:v-breathe 4s ease-in-out infinite}
+.voice-orb-container[data-state="idle"]::before{opacity:.4;background:radial-gradient(circle,rgba(130,110,200,.10) 0%,rgba(120,100,190,.05) 40%,transparent 70%)}
+@keyframes v-breathe{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.08);opacity:.85}}
+.voice-orb-img{width:120px;height:120px;display:block;will-change:transform,filter;transform-origin:center center}
+.voice-orb-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:-apple-system,sans-serif;font-size:10px;font-weight:500;letter-spacing:.3px;color:rgba(255,255,255,.85);text-align:center;white-space:nowrap;pointer-events:none;text-shadow:0 1px 4px rgba(80,60,140,.5)}
+.voice-transcript{flex:1;min-width:0;background:#fff;border:1.5px solid rgba(180,195,220,.35);border-radius:16px;padding:18px 22px;max-height:200px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.voice-transcript::-webkit-scrollbar{width:4px}
+.voice-transcript::-webkit-scrollbar-thumb{background:rgba(160,160,200,.25);border-radius:2px}
+.vt-empty{color:#b0b8c8;font-size:13px;text-align:center;padding:20px 0}
+.vt-msg{margin-bottom:12px;line-height:1.5;font-size:13.5px;color:#3a3f4b;animation:vt-fade .5s ease both}
+.vt-msg:last-child{margin-bottom:0}
+@keyframes vt-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.vt-msg .vt-speaker{font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.vt-msg.user .vt-speaker{color:rgba(80,170,255,.85)}
+.vt-msg.agent .vt-speaker{color:rgba(145,90,240,.85)}
+.voice-status{display:flex;align-items:center;gap:6px;margin-top:8px}
+.voice-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--muted);transition:background .3s}
+.voice-status-dot.listening{background:#50b4ff;animation:vs-pulse 1.5s ease-in-out infinite}
+.voice-status-dot.speaking{background:#9b5aff;animation:vs-pulse 1.5s ease-in-out infinite}
+.voice-status-dot.connecting{background:#8c8cff;animation:vs-pulse 2s ease-in-out infinite}
+@keyframes vs-pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.voice-status-text{font-size:11px;color:var(--muted);font-weight:500}
+.voice-table-area{padding:24px 28px 28px}
+.voice-table-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.voice-table-title::after{content:'';display:block;width:24px;height:1.5px;background:var(--border2);border-radius:2px}
+.voice-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--r);box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.voice-table-wrap table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:700px}
+.voice-table-wrap thead tr{background:var(--surface2)}
+.voice-table-wrap th{text-align:left;padding:10px 14px;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+.voice-table-wrap tbody tr:nth-child(even){background:var(--bg)}
+.voice-table-wrap tbody tr:nth-child(odd){background:var(--surface)}
+.voice-table-wrap td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text);line-height:1.4;vertical-align:top}
+.voice-table-wrap td:first-child{font-family:'Courier New',monospace;font-size:11.5px;font-weight:700;color:var(--accent)}
+.voice-status-chip{display:inline-block;padding:2px 8px;border-radius:100px;font-size:10.5px;font-weight:600}
+.vs-transit{background:#EBF0FF;color:#1740CC}
+.vs-arrived{background:#E8F8F2;color:#0F6B4F}
+.vs-delayed{background:#FFF0F0;color:#DC2626}
+.vs-storage{background:#FFFBEB;color:#D97706}
+.vs-delivered{background:#E8F8F2;color:#0F6B4F}
+.voice-hint{font-size:11.5px;color:var(--muted);margin-top:10px;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;line-height:1.5}
+.voice-hint strong{color:var(--text2)}
+.voice-faq{margin-top:20px}
+.voice-faq-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px}
+.voice-faq-list{display:flex;flex-direction:column;gap:10px}
+.voice-faq-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:border-color .2s}
+.voice-faq-item:hover{border-color:var(--border2)}
+.voice-faq-q{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.voice-faq-a{font-size:12.5px;color:var(--muted);line-height:1.5}
+
+@media(max-width:900px){
+  body{flex-direction:column}
+  .sidebar{width:100%;min-width:0;height:auto;position:relative;border-right:none;border-bottom:1px solid var(--border)}
+  .nav-wrap{display:flex;flex-wrap:wrap;gap:0}
+  .nav-group-label{display:none}
+  .nav-list{display:flex;flex-wrap:wrap;gap:2px}
+  .sidebar-footer{display:none}
+  .nav-orb-wrap{display:none}
+  .main{padding:28px 20px}
+  .robots-grid{grid-template-columns:1fr}
+  .modal{margin:12px}
+  .voice-widget-area{flex-direction:column;padding:20px}
+  .voice-orb-container{width:90px;height:90px}
+  .voice-orb-img{width:90px;height:90px}
+  .voice-modal{max-width:100%;margin:8px}
+  .voice-table-area{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progress"></div>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-label">Коммерческое предложение</div>
+    <div class="brand-name">КВИНТ <span>×</span><br>ТК «КИТ»</div>
+    <div class="brand-sub">Голосовая автоматизация · Март 2026</div>
+  </div>
+  <nav class="nav-wrap">
+    <div class="nav-group-label">Содержание</div>
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="#robots" data-section="robots">
+          <span class="nav-icon">🤖</span>Сценарии роботов<span class="nav-badge">6</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#integrations" data-section="integrations">
+          <span class="nav-icon">🔌</span>Интеграция<span class="nav-badge">15</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#voice-samples" data-section="voice-samples">
+          <span class="nav-icon">🔊</span>Примеры голосов
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#robot-demos" data-section="robot-demos">
+          <span class="nav-icon">▶️</span>Виды роботов
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#pricing" data-section="pricing">
+          <span class="nav-icon">📅</span>Сроки
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#questions" data-section="questions">
+          <span class="nav-icon">👥</span>Контакты
+        </a>
+      </li>
+    </ul>
+    <div class="nav-orb-wrap">
+      <button class="nav-orb" onclick="openVoiceAndStart()" title="Поговорить с роботом">
+        <img src="circle_1.png" alt="Voice">
+        <span class="nav-orb-text">Задайте<br>вопрос</span>
+      </button>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <strong>КВИНТ</strong><br>
+    <a href="https://kvint.io" target="_blank">kvint.io</a><br>
+    Конфиденциально · Март 2026
+  </div>
+</aside>
+
+<main class="main">
+
+<!-- ── СЦЕНАРИИ РОБОТОВ ── -->
+<section class="page-section" id="robots">
+  <div class="section-eyebrow">Сценарии роботов</div>
+  <h2 class="section-title">6 приоритетных роботов для ТК «КИТ»</h2>
+  <p class="section-desc">Отобраны на основе анализа 80+ реальных звонков, расшифровок и технического задания. Сортировка по критичности.</p>
+
+  <div class="filter-bar">
+    <button class="filter-btn f-active-all" onclick="filterCards('all',this)">Все · 6</button>
+    <button class="filter-btn" onclick="filterCards('in',this)">
+      <span class="filter-dot" style="background:var(--in-color)"></span>Входящие
+    </button>
+    <button class="filter-btn" onclick="filterCards('p1',this)">
+      <span class="filter-dot" style="background:var(--p1-color)"></span>P0 · Критичный
+    </button>
+    <button class="filter-btn" onclick="filterCards('p2',this)">
+      <span class="filter-dot" style="background:var(--p2-color)"></span>P1 · Высокий
+    </button>
+    <button class="filter-btn" onclick="filterCards('p3',this)">
+      <span class="filter-dot" style="background:var(--p3-color)"></span>P2 · Средний
+    </button>
+  </div>
+
+  <div class="robots-grid" id="cards-grid">
+
+    <div class="rcard" data-dir="in" data-pri="1" style="position:relative">
+      <div class="rcard-stripe"></div>
+      <div class="rcard-body">
+        <div class="rcard-header">
+          <div class="rcard-num">1</div>
+          <div class="rcard-title">
+            <div class="rcard-name">«Где мой груз»</div>
+            <div class="rcard-aud">Статус, местонахождение, дата прибытия</div>
+          </div>
+        </div>
+        <div class="rcard-tags">
+          <span class="rtag rtag-in"><span class="rtag-dot"></span>Входящий</span>
+          <span class="rtag rtag-gen"><span class="rtag-dot"></span>Генеративный</span>
+          <span class="priority-badge p1">🔴 P0 · Критичный</span>
+        </div>
+        <div>
+          <div class="rfield-label">Триггер</div>
+          <div class="trigger-chip">Клиент звонит узнать статус груза, дату прибытия или адрес терминала по накладной</div>
+        </div>
+        <div class="rcard-links">
+          <button class="link-btn" onclick="openModal('q1')"><span class="lb-icon">💬</span>Примеры вопросов</button>
+          <button class="link-btn" onclick="openModal('i1')"><span class="lb-icon">🔌</span>Интеграции</button>
+        </div>
+      </div>
+      <button class="rcard-voice-orb" onclick="openVoiceModal()" title="Поговорить с роботом">
+        <img src="circle_1.png" alt="Voice">
+      </button>
+    </div>
+
+    <div class="rcard" data-dir="in" data-pri="1">
+      <div class="rcard-stripe"></div>
+      <div class="rcard-body">
+        <div class="rcard-header">
+          <div class="rcard-num">2</div>
+          <div class="rcard-title">
+            <div class="rcard-name">«Режим работы и адрес»</div>
+            <div class="rcard-aud">Справка по терминалам и ПВЗ</div>
+          </div>
+        </div>
+        <div class="rcard-tags">
+          <span class="rtag rtag-in"><span class="rtag-dot"></span>Входящий</span>
+          <span class="rtag rtag-gen"><span class="rtag-dot"></span>Генеративный</span>
+            <span class="priority-badge p1">🔴 P0 · Критичный</span>
+        </div>
+        <div>
+          <div class="rfield-label">Триггер</div>
+          <div class="trigger-chip">Клиент спрашивает адрес, режим работы или как добраться до нужного терминала</div>
+        </div>
+        <div class="rcard-links">
+          <button class="link-btn" onclick="openModal('q2')"><span class="lb-icon">💬</span>Примеры вопросов</button>
+          <button class="link-btn" onclick="openModal('i2')"><span class="lb-icon">🔌</span>Интеграции</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rcard" data-dir="in" data-pri="2">
+      <div class="rcard-stripe"></div>
+      <div class="rcard-body">
+        <div class="rcard-header">
+          <div class="rcard-num">3</div>
+          <div class="rcard-title">
+            <div class="rcard-name">«Заказ адресной доставки»</div>
+            <div class="rcard-aud">От терминала до двери клиента</div>
+          </div>
+        </div>
+        <div class="rcard-tags">
+          <span class="rtag rtag-in"><span class="rtag-dot"></span>Входящий</span>
+          <span class="rtag rtag-gen"><span class="rtag-dot"></span>Генеративный</span>
+          <span class="priority-badge p2">🟠 P1 · Высокий</span>
+        </div>
+        <div>
+          <div class="rfield-label">Триггер</div>
+          <div class="trigger-chip">Груз прибыл на терминал — клиент хочет оформить доставку до двери, а не ехать самому</div>
+        </div>
+        <div class="rcard-links">
+          <button class="link-btn" onclick="openModal('q3')"><span class="lb-icon">💬</span>Примеры вопросов</button>
+          <button class="link-btn" onclick="openModal('i3')"><span class="lb-icon">🔌</span>Интеграции</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rcard" data-dir="in" data-pri="2">
+      <div class="rcard-stripe"></div>
+      <div class="rcard-body">
+        <div class="rcard-header">
+          <div class="rcard-num">4</div>
+          <div class="rcard-title">
+            <div class="rcard-name">«Расчёт стоимости»</div>
+            <div class="rcard-aud">Калькулятор тарифов перевозки</div>
+          </div>
+        </div>
+        <div class="rcard-tags">
+          <span class="rtag rtag-in"><span class="rtag-dot"></span>Входящий</span>
+          <span class="rtag rtag-gen"><span class="rtag-dot"></span>Генеративный</span>
+            <span class="priority-badge p2">🟠 P1 · Высокий</span>
+        </div>
+        <div>
+          <div class="rfield-label">Триггер</div>
+          <div class="trigger-chip">Клиент хочет узнать стоимость перевозки «откуда–куда» по параметрам груза</div>
+        </div>
+        <div class="rcard-links">
+          <button class="link-btn" onclick="openModal('q4')"><span class="lb-icon">💬</span>Примеры вопросов</button>
+          <button class="link-btn" onclick="openModal('i4')"><span class="lb-icon">🔌</span>Интеграции</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rcard" data-dir="in" data-pri="3">
+      <div class="rcard-stripe"></div>
+      <div class="rcard-body">
+        <div class="rcard-header">
+          <div class="rcard-num">5</div>
+          <div class="rcard-title">
+            <div class="rcard-name">«Оформление перевозки / забор»</div>
+            <div class="rcard-aud">Новая заявка на отправку или вызов курьера</div>
+          </div>
+        </div>
+        <div class="rcard-tags">
+          <span class="rtag rtag-in"><span class="rtag-dot"></span>Входящий</span>
+          <span class="rtag rtag-gen"><span class="rtag-dot"></span>Генеративный</span>
+          <span class="priority-badge p3">⚫ P2 · Средний</span>
+        </div>
+        <div>
+          <div class="rfield-label">Триггер</div>
+          <div class="trigger-chip">Клиент хочет оформить новую отправку или вызвать машину для забора груза с адреса</div>
+        </div>
+        <div class="rcard-links">
+          <button class="link-btn" onclick="openModal('q5')"><span class="lb-icon">💬</span>Примеры вопросов</button>
+          <button class="link-btn" onclick="openModal('i5')"><span class="lb-icon">🔌</span>Интеграции</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rcard" data-dir="in" data-pri="3">
+      <div class="rcard-stripe"></div>
+      <div class="rcard-body">
+        <div class="rcard-header">
+          <div class="rcard-num">6</div>
+          <div class="rcard-title">
+            <div class="rcard-name">«Претензии и повреждения»</div>
+            <div class="rcard-aud">Потеря, задержка, порча груза</div>
+          </div>
+        </div>
+        <div class="rcard-tags">
+          <span class="rtag rtag-in"><span class="rtag-dot"></span>Входящий</span>
+          <span class="rtag rtag-gen"><span class="rtag-dot"></span>Генеративный</span>
+          <span class="priority-badge p3">⚫ P2 · Средний</span>
+        </div>
+        <div>
+          <div class="rfield-label">Триггер</div>
+          <div class="trigger-chip">Клиент сообщает об утере части груза, видимых повреждениях или критической задержке</div>
+        </div>
+        <div class="rcard-links">
+          <button class="link-btn" onclick="openModal('q6')"><span class="lb-icon">💬</span>Примеры вопросов</button>
+          <button class="link-btn" onclick="openModal('i6')"><span class="lb-icon">🔌</span>Интеграции</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<!-- ── ДОПОЛНИТЕЛЬНЫЕ РОБОТЫ ── -->
+<div class="add-robots-header">
+  <div class="add-robots-eyebrow">Дополнительные роботы</div>
+  <h3 class="add-robots-title">Дополнительные роботы на основе анализа сайта ТК «КИТ»</h3>
+  <p class="add-robots-sub">Исходящие голосовые роботы позволяют монетизировать клиентскую базу, снизить нагрузку на операторов и улучшить клиентский опыт — без единого ручного звонка.</p>
+</div>
+
+<div class="robots-grid">
+
+  <!-- Р7: Уведомление о прибытии -->
+  <div class="rcard" data-dir="out" data-pri="0">
+    <div class="rcard-stripe"></div>
+    <div class="rcard-body">
+      <div class="rcard-header">
+        <div class="rcard-num">7</div>
+        <div class="rcard-title">
+          <div class="rcard-name">Уведомление о прибытии груза</div>
+          <div class="rcard-aud">Получатели — проактивный сервис</div>
+        </div>
+      </div>
+      <div class="rcard-tags">
+        <span class="rtag rtag-out"><span class="rtag-dot"></span>Исходящий</span>
+        <span class="rtag rtag-gen"><span class="rtag-dot"></span>Генеративный</span>
+      </div>
+      <div>
+        <div class="rfield-label">Триггер</div>
+        <div class="trigger-chip">Груз сменил статус на «Прибыл на терминал» в CRM</div>
+      </div>
+      <div>
+        <div class="rfield-label" style="margin-top:4px">Пример фразы робота</div>
+        <div class="phrase-bubble">«Здравствуйте, Евгений! Ваш груз из Алматы прибыл на терминал в Абакане, улица Ленина, 15. Бесплатное хранение до 19 марта. Хотите оформить доставку до двери?»</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Р8: Подтверждение слота -->
+  <div class="rcard" data-dir="out" data-pri="0">
+    <div class="rcard-stripe"></div>
+    <div class="rcard-body">
+      <div class="rcard-header">
+        <div class="rcard-num">8</div>
+        <div class="rcard-title">
+          <div class="rcard-name">Подтверждение слота доставки</div>
+          <div class="rcard-aud">Получатели с назначенной доставкой</div>
+        </div>
+      </div>
+      <div class="rcard-tags">
+        <span class="rtag rtag-out"><span class="rtag-dot"></span>Исходящий</span>
+        <span class="rtag rtag-scr"><span class="rtag-dot"></span>Скриптовый</span>
+      </div>
+      <div>
+        <div class="rfield-label">Триггер</div>
+        <div class="trigger-chip">Логист назначил временной интервал доставки в CRM</div>
+      </div>
+      <div>
+        <div class="rfield-label" style="margin-top:4px">Пример фразы робота</div>
+        <div class="phrase-bubble">«Здравствуйте! ТК КИТ. Ваша доставка назначена на завтра, 17 марта, с 9:00 до 13:00. Вам удобно? Скажите «Да» для подтверждения или «Нет» для переноса.»</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Р9: Срок хранения -->
+  <div class="rcard" data-dir="out" data-pri="0">
+    <div class="rcard-stripe"></div>
+    <div class="rcard-body">
+      <div class="rcard-header">
+        <div class="rcard-num">9</div>
+        <div class="rcard-title">
+          <div class="rcard-name">Напоминание: срок хранения истекает</div>
+          <div class="rcard-aud">Получатели с грузом на терминале</div>
+        </div>
+      </div>
+      <div class="rcard-tags">
+        <span class="rtag rtag-out"><span class="rtag-dot"></span>Исходящий</span>
+        <span class="rtag rtag-scr"><span class="rtag-dot"></span>Скриптовый</span>
+      </div>
+      <div>
+        <div class="rfield-label">Триггер</div>
+        <div class="trigger-chip">До окончания 3-х дней бесплатного хранения остаётся 24 часа</div>
+      </div>
+      <div>
+        <div class="rfield-label" style="margin-top:4px">Пример фразы робота</div>
+        <div class="phrase-bubble">«Здравствуйте! ТК КИТ. Срок бесплатного хранения вашего груза истекает завтра. Приедете сами или оформим доставку до двери? Хранение сверх срока — от 50 рублей в сутки.»</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Р10: NPS -->
+  <div class="rcard" data-dir="out" data-pri="0">
+    <div class="rcard-stripe"></div>
+    <div class="rcard-body">
+      <div class="rcard-header">
+        <div class="rcard-num">10</div>
+        <div class="rcard-title">
+          <div class="rcard-name">NPS / Опрос удовлетворённости</div>
+          <div class="rcard-aud">Клиенты, получившие груз</div>
+        </div>
+      </div>
+      <div class="rcard-tags">
+        <span class="rtag rtag-out"><span class="rtag-dot"></span>Исходящий</span>
+        <span class="rtag rtag-scr"><span class="rtag-dot"></span>Скриптовый</span>
+      </div>
+      <div>
+        <div class="rfield-label">Триггер</div>
+        <div class="trigger-chip">Клиент получил груз (статус «Выдан») — через 24–48 часов после выдачи</div>
+      </div>
+      <div>
+        <div class="rfield-label" style="margin-top:4px">Пример фразы робота</div>
+        <div class="phrase-bubble">«Здравствуйте! Это ТК КИТ. Вы получили груз вчера. По шкале от 1 до 10 — насколько довольны нашим сервисом? Это займёт 30 секунд.»</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Р11: Реактивация / Кросс-сейл -->
+  <div class="rcard" data-dir="out" data-pri="0">
+    <div class="rcard-stripe"></div>
+    <div class="rcard-body">
+      <div class="rcard-header">
+        <div class="rcard-num">11</div>
+        <div class="rcard-title">
+          <div class="rcard-name">Реактивация / Кросс-сейл</div>
+          <div class="rcard-aud">Клиенты без отправлений 90+ дней</div>
+        </div>
+      </div>
+      <div class="rcard-tags">
+        <span class="rtag rtag-out"><span class="rtag-dot"></span>Исходящий</span>
+        <span class="rtag rtag-gen"><span class="rtag-dot"></span>Генеративный</span>
+      </div>
+      <div>
+        <div class="rfield-label">Триггер</div>
+        <div class="trigger-chip">Клиент не делал отправлений 90+ дней или запускается сезонная акция</div>
+      </div>
+      <div>
+        <div class="rfield-label" style="margin-top:4px">Пример фразы робота</div>
+        <div class="phrase-bubble">«Здравствуйте! ТК КИТ. Вы пользовались нашими услугами 3 месяца назад. Хотим предложить специальный тариф на летний сезон — есть минута?»</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Р12: HR-воронка -->
+  <div class="rcard" data-dir="out" data-pri="0">
+    <div class="rcard-stripe"></div>
+    <div class="rcard-body">
+      <div class="rcard-header">
+        <div class="rcard-num">12</div>
+        <div class="rcard-title">
+          <div class="rcard-name">HR-воронка / Подбор персонала</div>
+          <div class="rcard-aud">Кандидаты на открытые вакансии</div>
+        </div>
+      </div>
+      <div class="rcard-tags">
+        <span class="rtag rtag-out"><span class="rtag-dot"></span>Исходящий</span>
+        <span class="rtag rtag-gen"><span class="rtag-dot"></span>Генеративный</span>
+      </div>
+      <div>
+        <div class="rfield-label">Триггер</div>
+        <div class="trigger-chip">Резюме получено через HH.ru или другой источник — первичный скрининг кандидата</div>
+      </div>
+      <div>
+        <div class="rfield-label" style="margin-top:4px">Пример фразы робота</div>
+        <div class="phrase-bubble">«Здравствуйте, Александр! Это Мария из ТК КИТ. Вы откликались на вакансию водителя-экспедитора. Готовы ответить на пару вопросов прямо сейчас?»</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</section>
+
+<!-- ── ИНТЕГРАЦИЯ ── -->
+<section class="page-section" id="integrations">
+  <div class="section-eyebrow">Интеграция</div>
+  <h2 class="section-title">Сводная таблица интеграций</h2>
+  <p class="section-desc" style="white-space:nowrap;overflow:visible;max-width:none">Все системы и API-методы по роботам — из анализа реальных звонков ТК «КИТ», ТЗ, а также официального сайта ТК «КИТ».</p>
+
+  <div style="overflow-x:auto;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow-xs)">
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead>
+        <tr style="background:var(--surface2)">
+          <th style="text-align:left;padding:12px 16px;font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);min-width:260px">Интеграция</th>
+          <th style="text-align:center;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;min-width:52px">Р1<div style="font-weight:400;font-size:9px;color:var(--text2);text-transform:none;margin-top:2px">Где груз</div><div style="font-size:10px;font-weight:700;color:var(--accent);margin-top:3px">9</div></th>
+          <th style="text-align:center;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;min-width:52px">Р2<div style="font-weight:400;font-size:9px;color:var(--text2);text-transform:none;margin-top:2px">Адрес</div><div style="font-size:10px;font-weight:700;color:var(--accent);margin-top:3px">10</div></th>
+          <th style="text-align:center;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;min-width:52px">Р3<div style="font-weight:400;font-size:9px;color:var(--text2);text-transform:none;margin-top:2px">Доставка</div><div style="font-size:10px;font-weight:700;color:var(--accent);margin-top:3px">10</div></th>
+          <th style="text-align:center;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;min-width:52px">Р4<div style="font-weight:400;font-size:9px;color:var(--text2);text-transform:none;margin-top:2px">Расчёт</div><div style="font-size:10px;font-weight:700;color:var(--accent);margin-top:3px">5</div></th>
+          <th style="text-align:center;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;min-width:52px">Р5<div style="font-weight:400;font-size:9px;color:var(--text2);text-transform:none;margin-top:2px">Оформл.</div><div style="font-size:10px;font-weight:700;color:var(--accent);margin-top:3px">8</div></th>
+          <th style="text-align:center;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;min-width:52px">Р6<div style="font-weight:400;font-size:9px;color:var(--text2);text-transform:none;margin-top:2px">Претензии</div><div style="font-size:10px;font-weight:700;color:var(--accent);margin-top:3px">8</div></th>
+          <th style="text-align:center;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--out-color);border-bottom:1px solid var(--border);border-left:2px solid #C4B5FD;white-space:nowrap;min-width:52px">Р7<div style="font-weight:400;font-size:9px;color:var(--text2);text-transform:none;margin-top:2px">Уведомл.</div><div style="font-size:10px;font-weight:700;color:var(--out-color);margin-top:3px">7</div></th>
+          <th style="text-align:center;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--out-color);border-bottom:1px solid var(--border);white-space:nowrap;min-width:52px">Р8<div style="font-weight:400;font-size:9px;color:var(--text2);text-transform:none;margin-top:2px">Слот</div><div style="font-size:10px;font-weight:700;color:var(--out-color);margin-top:3px">7</div></th>
+          <th style="text-align:center;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--out-color);border-bottom:1px solid var(--border);white-space:nowrap;min-width:52px">Р9<div style="font-weight:400;font-size:9px;color:var(--text2);text-transform:none;margin-top:2px">Хранение</div><div style="font-size:10px;font-weight:700;color:var(--out-color);margin-top:3px">8</div></th>
+          <th style="text-align:center;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--out-color);border-bottom:1px solid var(--border);white-space:nowrap;min-width:52px">Р10<div style="font-weight:400;font-size:9px;color:var(--text2);text-transform:none;margin-top:2px">NPS</div><div style="font-size:10px;font-weight:700;color:var(--out-color);margin-top:3px">5</div></th>
+          <th style="text-align:center;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--out-color);border-bottom:1px solid var(--border);white-space:nowrap;min-width:52px">Р11<div style="font-weight:400;font-size:9px;color:var(--text2);text-transform:none;margin-top:2px">Реакт.</div><div style="font-size:10px;font-weight:700;color:var(--out-color);margin-top:3px">7</div></th>
+          <th style="text-align:center;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--out-color);border-bottom:1px solid var(--border);white-space:nowrap;min-width:52px">Р12<div style="font-weight:400;font-size:9px;color:var(--text2);text-transform:none;margin-top:2px">HR</div><div style="font-size:10px;font-weight:700;color:var(--out-color);margin-top:3px">5</div></th>
+        </tr>
+      </thead>
+      <tbody id="int-table-body"></tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow-xs)">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">CRM / ERP</div>
+      <div style="font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:4px">Система учёта заказов</div>
+      <div style="font-size:12.5px;color:var(--text2)">Источник всех данных о грузах, терминалах, логистах. Роботы 1–6 читают и пишут через REST API.</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow-xs)">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">SIP-телефония / АТС</div>
+      <div style="font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:4px">Голосовая инфраструктура</div>
+      <div style="font-size:12.5px;color:var(--text2)">Caller ID, очереди операторов, передача текстового контекста при переводе звонка всем роботам.</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow-xs)">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">SMS-шлюз</div>
+      <div style="font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:4px">Уведомления и геометки</div>
+      <div style="font-size:12.5px;color:var(--text2)">Адреса терминалов, ссылки на Яндекс.Карты / 2GIS по запросу клиента — роботы 1 и 2.</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow-xs)">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">RAG / База знаний</div>
+      <div style="font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:4px">FAQ и регламенты</div>
+      <div style="font-size:12.5px;color:var(--text2)">Правила выдачи, доверенности, обрешётка, тарифная документация — роботы 2, 4 и 6.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ПРИМЕРЫ ГОЛОСОВ ── -->
+<section class="page-section" id="voice-samples">
+  <div class="section-eyebrow">Примеры голосов</div>
+  <h2 class="section-title">Огромное количество голосов для генеративных роботов</h2>
+  <div class="voice-samples-block">
+    <div class="voice-table-area">
+      <div class="voice-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:50px">№</th>
+              <th>Название</th>
+              <th style="width:100px;text-align:center">Пол</th>
+              <th style="width:120px;text-align:center">Прослушать</th>
+            </tr>
+          </thead>
+          <tbody id="voice-samples-tbody">
+            <tr><td colspan="4" style="text-align:center;color:var(--muted);padding:16px">Загрузка...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="voice-samples-hint">Фраза для озвучки: «Добрый день! Я голосовой ассистент КВИНТ. Чем могу вам помочь?»</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ВИДЫ РОБОТОВ ── -->
+<section class="page-section" id="robot-demos">
+  <div class="section-eyebrow">Виды роботов</div>
+  <h2 class="section-title">Варианты генеративного голосового робота</h2>
+  <div class="robot-types-grid">
+    <article class="robot-type-card">
+      <h4 class="robot-type-title">Обработка звонков на входящей линии</h4>
+      <p class="robot-type-desc">Робот принимает входящие обращения, отвечает на FAQ, записывает на приём, консультирует по услугам и ценам.</p>
+      <div class="robot-type-visual tone-in">
+        <div style="display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,var(--in-bg),var(--accent-mid));border-radius:8px;font-size:36px">📞</div>
+      </div>
+      <ul class="robot-type-list">
+        <li>Принимает 100% звонков без потерь</li>
+        <li>Повышает лояльность клиентов</li>
+        <li>Закрывает более 90% обращений</li>
+        <li>Снижает нагрузку на операторов</li>
+      </ul>
+    </article>
+    <article class="robot-type-card">
+      <h4 class="robot-type-title">Виджет обратного перезвона на телефон</h4>
+      <p class="robot-type-desc">Клиент оставляет номер на сайте, робот перезванивает, подтверждает запрос и выполняет первичный сбор информации.</p>
+      <div class="robot-type-visual tone-out">
+        <div style="display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,var(--out-bg),#C4B5FD);border-radius:8px;font-size:36px">🔄</div>
+      </div>
+      <ul class="robot-type-list">
+        <li>Мгновенная обработка обращений</li>
+        <li>Экономит на ФОТ</li>
+        <li>Повышает компетентность ответов</li>
+        <li>Перезванивает в течение 20 секунд</li>
+      </ul>
+    </article>
+    <article class="robot-type-card">
+      <h4 class="robot-type-title">Виджет для консультации в веб-браузере</h4>
+      <p class="robot-type-desc">Голосовой ассистент консультирует прямо в браузере, на сайте компании, без звонков с телефона.</p>
+      <div class="robot-type-visual tone-gen robot-type-visual-orb">
+        <img src="circle_1.png" alt="" class="robot-type-orb-img">
+        <span class="robot-type-overlay">Задай вопрос</span>
+      </div>
+      <ul class="robot-type-list">
+        <li>Консультации 24/7 без очереди</li>
+        <li>Повышает конверсию сайта на 30%</li>
+        <li>Полная конфиденциальность</li>
+        <li>Новый канал для молодой аудитории</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<!-- ── ЦЕНООБРАЗОВАНИЕ ── -->
+<section class="page-section" id="pricing">
+  <div class="section-eyebrow">Сроки</div>
+  <h2 class="section-title">Сроки реализации</h2>
+  <p class="section-desc">Разбивка по этапам разработки и внедрения.</p>
+  <div class="placeholder-block">
+    <div style="font-size:28px;margin-bottom:8px">💰</div>
+    <strong>Раздел в разработке</strong>
+    <p>Смета будет сформирована после уточнения объёма интеграций</p>
+  </div>
+</section>
+
+<!-- ── ВОПРОСЫ ── -->
+<section class="page-section" id="questions">
+  <div class="section-eyebrow">Контакты</div>
+  <h2 class="section-title">Контакты</h2>
+  <p class="section-desc">Мы открыты к диалогу — напишите или позвоните напрямую.</p>
+
+  <div class="contacts-grid">
+
+    <div class="contact-card">
+      <div class="contact-avatar">АД</div>
+      <div class="contact-info">
+        <div class="contact-name">Алёна Дядченко</div>
+        <div class="contact-role">Генеральный директор</div>
+        <div class="contact-links">
+          <a href="mailto:alena.dyadchenko@kvint.io" class="contact-link contact-link-email">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M2 4h16v12H2V4zm0 0l8 7 8-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            alena.dyadchenko@kvint.io
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-avatar">ШИ</div>
+      <div class="contact-info">
+        <div class="contact-name">Илья Шиян</div>
+        <div class="contact-role">Директор по стратегии и развитию · Сооснователь</div>
+        <div class="contact-links">
+          <a href="mailto:i.shiyan@kvint.io" class="contact-link contact-link-email">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M2 4h16v12H2V4zm0 0l8 7 8-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            i.shiyan@kvint.io
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-avatar">НА</div>
+      <div class="contact-info">
+        <div class="contact-name">Арсений Назаркин</div>
+        <div class="contact-role">Технический директор · Сооснователь</div>
+        <div class="contact-links">
+          <a href="mailto:arseny.nazarkin@kvint.io" class="contact-link contact-link-email">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M2 4h16v12H2V4zm0 0l8 7 8-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            arseny.nazarkin@kvint.io
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-avatar">БА</div>
+      <div class="contact-info">
+        <div class="contact-name">Александр Борисов</div>
+        <div class="contact-role">Директор по работе с корпоративными клиентами</div>
+        <div class="contact-links">
+          <a href="tel:+79152223077" class="contact-link contact-link-phone">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M3 3h4l2 5-2.5 1.5a11 11 0 005 5L13 12l5 2v4a1 1 0 01-1 1C6.716 19 1 13.284 1 4a1 1 0 011-1z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            +7 915 222-30-77
+          </a>
+          <a href="mailto:aleksandr.borisov@kvint.io" class="contact-link contact-link-email">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M2 4h16v12H2V4zm0 0l8 7 8-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            aleksandr.borisov@kvint.io
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-avatar">ЖЕ</div>
+      <div class="contact-info">
+        <div class="contact-name">Евгений Журавлёв</div>
+        <div class="contact-role">Ведущий менеджер по работе с корпоративными клиентами</div>
+        <div class="contact-links">
+          <a href="tel:+79056628698" class="contact-link contact-link-phone">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M3 3h4l2 5-2.5 1.5a11 11 0 005 5L13 12l5 2v4a1 1 0 01-1 1C6.716 19 1 13.284 1 4a1 1 0 011-1z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            +7 905 662-86-98
+          </a>
+          <a href="mailto:evgeniy.zhuravlev@kvint.io" class="contact-link contact-link-email">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M2 4h16v12H2V4zm0 0l8 7 8-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            evgeniy.zhuravlev@kvint.io
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="contacts-footer">
+    <a href="https://kvint.io" target="_blank" class="contacts-site-link">
+      <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M10 2c0 0-4 3.5-4 8s4 8 4 8M10 2c0 0 4 3.5 4 8s-4 8-4 8M2 10h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      kvint.io
+    </a>
+  </div>
+</section>
+
+</main>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-eyebrow" id="m-eyebrow"></div>
+      <div class="modal-title" id="m-title"></div>
+      <div class="modal-robot" id="m-robot"></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+<script>
+/* INT TABLE */
+const INT_ROWS = [
+  // name, desc, robots: [R1,R2,R3,R4,R5,R6, R7,R8,R9,R10,R11,R12]
+  { name:'Поиск заказов по Caller ID',  desc:'GetOrdersByPhone — находит накладные по номеру входящего; исключает ручной ввод трек-номера',                 robots:[1,1,1,0,0,1, 0,0,0,0,0,0] },
+  { name:'Информация о заказе',         desc:'GetOrderInfo(TrackNumber) — статус, маршрут, вес, дата прибытия, терминал, сумма к оплате',                    robots:[1,1,1,0,1,1, 1,1,1,1,0,0] },
+  { name:'Справочник терминалов',       desc:'GetTerminalInfo(City, ID) — адрес и режим работы с учётом праздников',                                         robots:[1,1,1,0,0,0, 1,0,1,0,0,0] },
+  { name:'Поиск ближайшего терминала',  desc:'FindNearestTerminal(City) — ПВЗ рядом с городом без терминала (Реутов → Котельники)',                           robots:[0,1,0,0,0,0, 0,0,0,0,0,0] },
+  { name:'Расчёт доставки до двери',    desc:'CalculateDelivery(City,Weight,Volume) — стоимость адресной доставки от терминала для апсейла',                  robots:[1,1,1,0,0,0, 1,0,1,0,0,0] },
+  { name:'Калькулятор тарифов',         desc:'CalculateRate(from, to, weight, volume) — стоимость новой перевозки между городами',                            robots:[0,0,0,1,1,0, 0,0,0,0,1,0] },
+  { name:'Отправка SMS',                desc:'SendSMS(Phone, Text) — геометка с адресом терминала, ссылка на Яндекс.Карты / 2GIS',                            robots:[1,1,0,0,0,0, 1,1,1,0,1,1] },
+  { name:'Создание заявки логисту',     desc:'Create_Logistician_Request — тикет на перезвон: order_id, phone, alt_phone, is_urgent',                         robots:[0,0,1,0,1,1, 0,1,1,0,1,0] },
+  { name:'Проверка статуса оплаты',     desc:'Check_Payment_Status(order_id) — поступила ли оплата перед оформлением',                                        robots:[0,0,1,0,1,0, 0,0,0,0,0,0] },
+  { name:'Создание новой накладной',    desc:'CreateOrder(params) — оформление заявки на перевозку через API без участия менеджера',                          robots:[0,0,0,0,1,0, 0,0,0,0,0,0] },
+  { name:'Регистрация претензии',       desc:'CreateClaim(order_id, type, description) — тикет в отдел претензий по утере или повреждению',                   robots:[0,0,0,0,0,1, 0,0,0,1,0,0] },
+  { name:'Изменение / отмена заказа',   desc:'UpdateOrder(TrackNumber, params) — отмена адресной доставки, изменение параметров',                             robots:[1,0,1,0,0,0, 0,1,0,0,0,0] },
+  { name:'Перевод с контекстом',        desc:'TransferCall(SIP_Trunk, Context) — перевод на оператора с передачей имени, интента и данных груза',              robots:[1,1,1,1,1,1, 1,1,1,1,1,1] },
+  { name:'RAG / База знаний',           desc:'Векторный поиск по FAQ: правила выдачи, доверенности, обрешётка, тарифная документация',                        robots:[0,1,0,1,0,1, 0,0,0,0,1,1] },
+  { name:'SIP-телефония / АТС',         desc:'Caller ID, очереди операторов, передача текстового контекста при переводе звонка',                               robots:[1,1,1,1,1,1, 1,1,1,1,1,1] },
+  { name:'Маршрутизация звонков (IVR)', desc:'Routing profile в АТС/IVR — правила входящего потока: какой вызов идёт к роботу, fallback на оператора, перевод по теме', robots:[1,1,1,1,1,1, 1,1,1,1,1,1] },
+];
+
+(function buildIntTable(){
+  const tb = document.getElementById('int-table-body');
+  if (!tb) return;
+  INT_ROWS.forEach((row, i) => {
+    const tr = document.createElement('tr');
+    tr.style.background = i % 2 === 0 ? '#fff' : 'var(--bg)';
+    const chk = v => v
+      ? '<span style="color:#0F6B4F;font-size:15px;font-weight:700">\u2713</span>'
+      : '<span style="color:var(--border2);font-size:12px">&mdash;</span>';
+    tr.innerHTML =
+      '<td style="padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:top">'
+      + '<div style="font-size:13px;font-weight:650;color:var(--text);line-height:1.3;margin-bottom:3px">' + row.name + '</div>'
+      + '<div style="font-size:11px;color:var(--text2);line-height:1.4;font-family:Courier New,monospace">' + row.desc + '</div>'
+      + '</td>'
+      + row.robots.map((v, ci) => '<td style="padding:11px 8px;border-bottom:1px solid var(--border);text-align:center;vertical-align:middle' + (ci === 6 ? ';border-left:2px solid #C4B5FD' : '') + '">' + chk(v) + '</td>').join('');
+    tb.appendChild(tr);
+  });
+})();
+</script>
+
+<script>
+const MODALS = {
+  q1:{eyebrow:'Робот 1 · Примеры вопросов',title:'Реальные фразы из 20 звонков',robot:'«Где мой груз» — статус и трекинг',simple:true,body:`<div class="modal-simple-body"><h4>Группа А — Статус и дата прибытия (диалоги №1, 5, 7, 11, 13, 15, 19)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">1</div><div class="q-text">«Скажите, где сейчас груз 012-019-16-96? Когда ожидать?»<em>Базовый запрос по трек-номеру</em></div></li>
+<li class="q-item"><div class="q-num">2</div><div class="q-text">«Груз из Алматы в Абакан — когда прибудет? По номеру телефона найдёте?»<em>Caller ID — проактивный ответ без ввода накладной</em></div></li>
+<li class="q-item"><div class="q-num">3</div><div class="q-text">«Груз из Новосибирска в Солнечногорск — на сегодня назначена доставка?»<em>Статус адресной доставки на текущий день</em></div></li>
+<li class="q-item"><div class="q-num">4</div><div class="q-text">«Ищу груз ИП Грачёва Дмитрия, трек начинается с 012»<em>Идентификация по ФИО + трек</em></div></li>
+<li class="q-item"><div class="q-num">5</div><div class="q-text">«Мне пришло СМС что груз прибыл — куда именно приехать?»<em>Адрес конкретного терминала после уведомления</em></div></li>
+</ul>
+<h4>Группа Б — Задержка (диалоги №2, 6, 9, 10)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">6</div><div class="q-text">«Сроки прошли, груза нет — что происходит? Статус 3 дня не меняется»<em>Задержка, статус не обновляется</em></div></li>
+<li class="q-item"><div class="q-num">7</div><div class="q-text">«Обещали перезвонить завтра — не позвонили. Уже второй раз»<em>Повторное обращение, нужен is_urgent тикет</em></div></li>
+<li class="q-item"><div class="q-num">8</div><div class="q-text">«Груз завис в Казани — уже 5 дней, что случилось?»<em>Груз не двигается по маршруту</em></div></li>
+</ul>
+<h4>Группа В — Адрес терминала (диалоги №3, 14, 17, 20)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">9</div><div class="q-text">«Груз прибыл в Екатеринбург — на каком складе? Там их несколько»<em>Мульти-терминал: клиент не знает конкретный адрес</em></div></li>
+<li class="q-item"><div class="q-num">10</div><div class="q-text">«Я ищу на Енисейской — это мой груз там?»<em>Клиент знает улицу, хочет подтверждение</em></div></li>
+</ul>
+<h4>Группа Г — Изменение (диалог №18)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">11</div><div class="q-text">«Хочу отменить доставку до двери — заберу самостоятельно»<em>Отмена адресной доставки — UpdateOrder или оператор?</em></div></li>
+<li class="q-item"><div class="q-num">12</div><div class="q-text">«Груз пришёл, но хочу всё-таки заказать доставку — как оформить?»<em>Заказ доставки постфактум</em></div></li>
+</ul>
+<div class="modal-note">Fallback: утеря/повреждение → немедленный перевод. Трек не найден за 2 попытки → перевод.</div></div>`},
+  i1:{eyebrow:'Робот 1 · Интеграции',title:'Системы, API и открытые вопросы',robot:'«Где мой груз» — статус и трекинг',tabbed:true,tabs:['Необходимые интеграции','API-методы','Открытые вопросы'],panels:[`<h4>Системы</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">CRM / ERP ТК КИТ</div><div class="api-desc">Статус груза, маршрут, дата прибытия, терминал, сумма. Список заказов по телефону и ИНН.</div></div>
+<div class="api-item"><div class="api-method">SMS-шлюз</div><div class="api-desc">Геометка с адресом терминала (Яндекс.Карты) по запросу клиента.</div></div>
+<div class="api-item"><div class="api-method">SIP-телефония / АТС</div><div class="api-desc">Caller ID. Перевод с контекстом при fallback.</div></div>
+<div class="api-item"><div class="api-method">Маршрутизация звонков (IVR)</div><div class="api-desc">Routing-профиль в АТС: входящие звонки → этот робот; fallback → очередь операторов; перевод по тематике (претензии, продажи).</div></div>
+</div>
+`,`<h4>API-методы</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">GetOrdersByPhone(phone)</div><div class="api-desc">1 заказ → проактивное предложение. Несколько → запрос трек-номера.</div><div class="api-params">return: [{order_id, route, status, arrival_date, terminal_id}]</div></div>
+<div class="api-item"><div class="api-method">GetOrderInfo(TrackNumber)</div><div class="api-desc">Статус, маршрут, вес, дата прибытия, терминал, сумма.</div><div class="api-params">return: {status, route, weight, arrival_date, terminal_id, amount_due, delay_flag}</div></div>
+<div class="api-item"><div class="api-method">GetTerminalInfo(City, Terminal_ID)</div><div class="api-desc">Адрес и режим работы с учётом праздников.</div><div class="api-params">return: {address, schedule_today, geo_link}</div></div>
+<div class="api-item"><div class="api-method">SendSMS(Phone, Text)</div><div class="api-desc">Геометка по запросу клиента.</div><div class="api-params">return: {status}</div></div>
+<div class="api-item"><div class="api-method">UpdateOrder(TrackNumber, {cancel_delivery:true})</div><div class="api-desc">Опционально: отмена адресной доставки без оператора.</div><div class="api-params">return: {success: bool}</div></div>
+<div class="api-item"><div class="api-method">TransferCall(SIP_Trunk, Context)</div><div class="api-desc">Перевод при претензии, задержке или нераспознанном трек-номере.</div><div class="api-params">context: {intent, order_id, client_name}</div></div>
+</div>
+`,`<h4>Идентификация</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Формат трек-номеров: «012...» и коды «УХТ-КАЗ», «Е7 Тюм», «21EGI». API принимает только цифры или полный буквенно-цифровой код?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Несколько грузов на один телефон (диалог №20) — перечислять все? Просить город отправления?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Поиск по ИНН: как ограничить выборку при десятках отправлений на юрлицо?</div></li>
+</ul>
+<h4>Выдача информации</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">API жёстко фиксирует конкретный терминал при нескольких складах в городе?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Называть клиенту сумму к оплате при статусе «Готов к выдаче»?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Предлагать доставку до двери при статусе «Прибыл»? Создавать тикет или переводить?</div></li>
+</ul>
+<h4>Задержки и проблемы</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">API видит причину задержки? Если нет — заготовленная фраза или перевод?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Отмена курьера (диалог №18): UpdateOrder напрямую или только через живого сотрудника?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Режим 24/7: ночной звонок по задержке — тикет или просить перезвонить утром?</div></li>
+</ul>
+`]},
+
+  q2:{eyebrow:'Робот 2 · Примеры вопросов',title:'Реальные фразы из звонков',robot:'«Режим работы и адрес» — справка по терминалам',simple:true,body:`<div class="modal-simple-body"><h4>Ветка А — Запрос расписания (без груза)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">1</div><div class="q-text">«До скольки работает терминал в Уфе сегодня?»<em>Простой запрос режима работы</em></div></li>
+<li class="q-item"><div class="q-num">2</div><div class="q-text">«В Уфе два терминала — на Трамвайной и Пугачёва. Какой ближе к центру?»<em>Выбор из нескольких терминалов</em></div></li>
+<li class="q-item"><div class="q-num">3</div><div class="q-text">«Работаете ли в праздники? Суббота выходной?»<em>Праздничное расписание</em></div></li>
+</ul>
+<h4>Ветка Б — Терминал прибытия груза (диалоги №1, 10, 16)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">4</div><div class="q-text">«Мой груз в Екатеринбурге — на какой именно склад привезут?»<em>Критично: клиент может приехать не туда (диалог №10)</em></div></li>
+<li class="q-item"><div class="q-num">5</div><div class="q-text">«Груз прибыл — адрес терминала и сколько нужно заплатить?»<em>Адрес + сумма + предложение доставки до двери</em></div></li>
+</ul>
+<h4>Ветка В — Сложная география (диалоги №2, №8)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">6</div><div class="q-text">«Есть ли у вас терминал в Реутове?»<em>Нет — FindNearestTerminal → «Ближайший в Котельниках»</em></div></li>
+<li class="q-item"><div class="q-num">7</div><div class="q-text">«Доставляете ли в Новую Чару?»<em>Город вне зоны — тикет или перевод</em></div></li>
+<li class="q-item"><div class="q-num">8</div><div class="q-text">«В Шушарах есть адресная доставка?»<em>Пригород — нужна база привязки к хабам</em></div></li>
+</ul>
+<h4>Ветка Г — Навигация (диалоги №14, №18)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">9</div><div class="q-text">«Стою у склада, не могу найти вход — как пройти?»<em>Геометка или телефон сотрудника?</em></div></li>
+<li class="q-item"><div class="q-num">10</div><div class="q-text">«Пришлите СМС со ссылкой на карту»<em>SendSMS(Phone, geo_link)</em></div></li>
+</ul>
+<h4>FAQ — Правила получения (диалоги №13, №19)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">11</div><div class="q-text">«Кто разбирает деревянную обрешётку при получении?»<em>FAQ: сотрудники склада</em></div></li>
+<li class="q-item"><div class="q-num">12</div><div class="q-text">«Может ли другой человек получить груз? Нужна доверенность?»<em>FAQ: паспорт или нотариальная доверенность</em></div></li>
+<li class="q-item"><div class="q-num">13</div><div class="q-text">«Склад закрыт, а мне очень надо забрать сегодня!»<em>Конфликт — алгоритм эмпатии или перевод (диалог №19)</em></div></li>
+</ul>
+<div class="modal-note">Обязательный апсейл: если груз прибыл — предлагать доставку до двери (диалоги №1, 6, 16, 19).</div></div>`},
+  i2:{eyebrow:'Робот 2 · Интеграции',title:'Системы, API и открытые вопросы',robot:'«Режим работы и адрес» — справка по терминалам',tabbed:true,tabs:['Необходимые интеграции','API-методы','Открытые вопросы'],panels:[`<h4>Системы</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">CRM / ERP ТК КИТ</div><div class="api-desc">База терминалов с адресами и расписаниями. Привязка накладной к терминалу. Расчёт стоимости доставки.</div></div>
+<div class="api-item"><div class="api-method">SMS-шлюз</div><div class="api-desc">Геометка (Яндекс.Карты / 2GIS) для навигации.</div></div>
+<div class="api-item"><div class="api-method">RAG / База знаний</div><div class="api-desc">FAQ: правила выдачи, доверенности, обрешётка.</div></div>
+<div class="api-item"><div class="api-method">SIP-телефония / АТС</div><div class="api-desc">Caller ID. Перевод с контекстом при нераспознанном запросе или конфликтной ситуации.</div></div>
+<div class="api-item"><div class="api-method">Маршрутизация звонков (IVR)</div><div class="api-desc">Routing-профиль в АТС: входящие звонки → этот робот; fallback → очередь операторов; перевод по тематике.</div></div>
+</div>
+`,`<h4>API-методы</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">GetTerminalInfo(City, Terminal_ID)</div><div class="api-desc">Адрес + режим работы на неделю с учётом праздников.</div><div class="api-params">return: {address, schedule_week, open_today: bool, geo_link}</div></div>
+<div class="api-item"><div class="api-method">FindNearestTerminal(City)</div><div class="api-desc">Ближайший ПВЗ к городу без терминала.</div><div class="api-params">return: {nearest_city, terminal_id, distance_km, address}</div></div>
+<div class="api-item"><div class="api-method">GetOrdersByPhone + GetOrderInfo</div><div class="api-desc">Проактивная идентификация груза и выдача точного терминала.</div><div class="api-params">return: {terminal_id, status, amount_due}</div></div>
+<div class="api-item"><div class="api-method">CalculateDelivery(City, Weight, Volume)</div><div class="api-desc">Расчёт от терминала до двери для апсейла.</div><div class="api-params">return: {price, eta}</div></div>
+<div class="api-item"><div class="api-method">SendSMS(Phone, Text)</div><div class="api-desc">Геометка для навигации.</div><div class="api-params">return: {status}</div></div>
+</div>
+`,`<h4>Интеграция и расчёт</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Апсейл: операторы называют точную стоимость («1280 руб.»). API отдаёт точную цифру или «от Х рублей»?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Праздничное расписание: API возвращает режим с учётом переносов? Или отдельная таблица исключений?</div></li>
+</ul>
+<h4>Сложная география</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">База привязки «мелкий город → хаб»: есть ли? (Реутов → Котельники.) Доступна через API?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Города вне зоны (Новая Чара): тикет в CRM или перевод на специалиста?</div></li>
+</ul>
+<h4>FAQ и навигация</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Трек-номера: диалог №10 — «21EGI», оператор говорит «6 букв + 10 цифр». Все форматы? Обучать ASR?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">FAQ: готова ли база правил терминалов для загрузки в RAG?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Навигация: давать телефон сотрудника склада — или только SMS с геоточкой?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Закрытый склад, негативный клиент (диалог №19): алгоритм эмпатии или перевод на старшего?</div></li>
+</ul>
+`]},
+
+  q3:{eyebrow:'Робот 3 · Примеры вопросов',title:'Реальные фразы из звонков',robot:'«Заказ адресной доставки» — от терминала до двери',simple:true,body:`<div class="modal-simple-body"><h4>Сценарий А — Первичный заказ</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">1</div><div class="q-text">«Груз на терминале — хочу оформить доставку до двери, посёлок Зелёный Бор»<em>Самый частый кейс — Create_Logistician_Request</em></div></li>
+<li class="q-item"><div class="q-num">2</div><div class="q-text">«Груз прибыл в Магнитогорск — оформите доставку, пожалуйста»<em>Стандартный заказ (адрес уточнит логист)</em></div></li>
+<li class="q-item"><div class="q-num">3</div><div class="q-text">«Оплата по счёту прошла? Пусть логист свяжется для согласования»<em>Check_Payment_Status → Create_Logistician_Request</em></div></li>
+</ul>
+<h4>Сценарий Б — Статус и время</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">4</div><div class="q-text">«Доставка на сегодня назначена? До скольки привезут?»<em>Проверка временного интервала из API</em></div></li>
+<li class="q-item"><div class="q-num">5</div><div class="q-text">«Телефон курьера дайте — хочу уточнить время прибытия»<em>Прямой номер не предоставляется: водитель звонит за 1 час</em></div></li>
+<li class="q-item"><div class="q-num">6</div><div class="q-text">«Доставка должна была вчера — почему нет? Логист обещал и не перезвонил»<em>Повторный запрос + is_urgent (диалоги №10, 12)</em></div></li>
+</ul>
+<h4>Сценарий В — Второстепенный склад</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">7</div><div class="q-text">«Груз на Маневровой — оттуда доставки нет. Что делать?»<em>is_delivery_available=false → предложение перемещения</em></div></li>
+<li class="q-item"><div class="q-num">8</div><div class="q-text">«Сколько стоит переместить груз на центральный склад?»<em>CalculateDelivery — перемещение + доставка (диалог №19)</em></div></li>
+</ul>
+<h4>Сценарий Г — Срочность и жалобы</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">9</div><div class="q-text">«Станок пришёл в пятницу, сегодня вторник — 4 дня никто не звонит!»<em>is_urgent=true, возможный перевод на рекламации (диалог №4)</em></div></li>
+<li class="q-item"><div class="q-num">10</div><div class="q-text">«Логист пусть перезвонит на другой номер — 9-221-88-30»<em>Поле alternative_phone в заявке</em></div></li>
+<li class="q-item"><div class="q-num">11</div><div class="q-text">«Хочу отменить заявку — машина уже выехала? Будет штраф?»<em>Предупреждение при отмене после выезда</em></div></li>
+</ul>
+<div class="modal-note">Робот не даёт телефон водителя и не уточняет адрес — это делает логист при перезвоне.</div></div>`},
+  i3:{eyebrow:'Робот 3 · Интеграции',title:'Системы, API и открытые вопросы',robot:'«Заказ адресной доставки» — от терминала до двери',tabbed:true,tabs:['Необходимые интеграции','API-методы','Открытые вопросы'],panels:[`<h4>Системы</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">CRM / ERP ТК КИТ</div><div class="api-desc">Статус заявки, слот, флаг is_delivery_available_from_terminal, стоимость перемещения. Запись заявок логистам с флагом is_urgent.</div></div>
+<div class="api-item"><div class="api-method">SIP-телефония / АТС</div><div class="api-desc">Caller ID. Передача контекста при переводе на оператора.</div></div>
+<div class="api-item"><div class="api-method">Маршрутизация звонков (IVR)</div><div class="api-desc">Routing-профиль: входящий → робот; при заказе доставки до двери — перевод в нужную очередь с данными заказа.</div></div>
+</div>
+`,`<h4>API-методы</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">Get_Order_Status(phone, order_id, full_name, INN)</div><div class="api-desc">Расширенный поиск. Возвращает: статус, тип (доставка/забор), слот, is_delivery_available, transfer_cost.</div><div class="api-params">return: {status, delivery_type, slot, is_delivery_available: bool, transfer_cost}</div></div>
+<div class="api-item"><div class="api-method">Create_Logistician_Request(order_id, phone, alt_phone, comment, is_urgent)</div><div class="api-desc">Тикет для логиста с флагом срочности.</div><div class="api-params">params: order_id*, phone*, alt_phone?, comment?, is_urgent: bool</div></div>
+<div class="api-item"><div class="api-method">Check_Payment_Status(order_id)</div><div class="api-desc">Проверка оплаты перед созданием заявки.</div><div class="api-params">return: {paid: bool, amount, paid_date}</div></div>
+<div class="api-item"><div class="api-method">CalculateDelivery(City, Weight, Volume)</div><div class="api-desc">Стоимость доставки + перемещения со второстепенного склада.</div><div class="api-params">return: {delivery_price, transfer_price, total, eta}</div></div>
+<div class="api-item"><div class="api-method">UpdateOrder(TrackNumber, {cancel_delivery:true})</div><div class="api-desc">Отмена доставки при отказе клиента.</div><div class="api-params">return: {success: bool, penalty_applied: bool}</div></div>
+</div>
+`,`<h4>Бизнес-логика</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">SLA логистов: реальный срок ответа? Нужно называть конкретно — «до 18:00» или «в течение часа».</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Возможность дать роботу доступ к сетке слотов, чтобы исключить этап перезвона?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Альтернативный номер: куда в CRM записывается? Как авторизовать смену контакта?</div></li>
+</ul>
+<h4>Финансы и склады</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Точная стоимость: в диалоге №19 оператор называет цифру сразу. API отдаёт точную сумму или «от Х рублей»?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Второстепенные склады: API возвращает флаг is_delivery_available_from_terminal?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Холостой прогон: при каких статусах предупреждать клиента об оплате при отмене?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">3 дня бесплатного хранения и оплата на месте — универсально для всех терминалов?</div></li>
+</ul>
+<h4>Инциденты</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Жалобы (диалоги №4, 15): is_urgent тикет или немедленный перевод на рекламации?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Дубликаты заявок (диалог №18): выявляет и предлагает отменить — или передаёт логисту?</div></li>
+</ul>
+`]},
+
+  q4:{eyebrow:'Робот 4 · Примеры вопросов',title:'Реальные фразы из звонков',robot:'«Расчёт стоимости» — калькулятор тарифов',simple:true,body:`<div class="modal-simple-body"><h4>Расчёт по РФ (диалоги №2–4, 7–9, 12–15, 18, 19)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">1</div><div class="q-text">«Сколько будет перевезти 500 кг из Москвы в Сургут?»<em>Стандартный расчёт — вес, маршрут</em></div></li>
+<li class="q-item"><div class="q-num">2</div><div class="q-text">«Из Екатеринбурга в Казань, габариты 1,2×0,8×0,6 м»<em>Параметры груза — точный расчёт</em></div></li>
+<li class="q-item"><div class="q-num">3</div><div class="q-text">«Есть ли адресная доставка в посёлок Шушары под Питером?»<em>Уточнение географии до расчёта</em></div></li>
+<li class="q-item"><div class="q-num">4</div><div class="q-text">«Какие тарифы на доставку от двери до двери?»<em>Тип услуги «полная» перевозка</em></div></li>
+</ul>
+<h4>Международные перевозки (диалоги №10, 13, 15)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">5</div><div class="q-text">«Отправляете ли в Казахстан? Нужно из Новосибирска в Алматы»<em>Международное — отдельная очередь</em></div></li>
+<li class="q-item"><div class="q-num">6</div><div class="q-text">«Можно отправить в Баку, Азербайджан?»<em>СНГ вне основных направлений</em></div></li>
+<li class="q-item"><div class="q-num">7</div><div class="q-text">«Отправка из Минска в Корсаков — рассчитайте»<em>Беларусь → международный отдел</em></div></li>
+</ul>
+<h4>Вспомогательные вопросы</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">8</div><div class="q-text">«Как у вас всё это работает? Первый раз отправляю»<em>Краткая консультация → перевод специалисту</em></div></li>
+<li class="q-item"><div class="q-num">9</div><div class="q-text">«Уточните режим работы терминала в Махачкале» (диалог №1)<em>GetTerminalInfo или перевод</em></div></li>
+</ul>
+<div class="modal-note">Скриптовый робот: собирает параметры (откуда, куда, вес, объём), считает по API и называет цену или передаёт специалисту с контекстом.</div></div>`},
+  i4:{eyebrow:'Робот 4 · Интеграции',title:'Системы, API и открытые вопросы',robot:'«Расчёт стоимости» — калькулятор тарифов',tabbed:true,tabs:['Необходимые интеграции','API-методы','Открытые вопросы'],panels:[`<h4>Системы</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">CRM / ERP — Тарифный калькулятор</div><div class="api-desc">CalculateRate: расчёт стоимости перевозки на основе маршрута и параметров груза.</div></div>
+<div class="api-item"><div class="api-method">SIP-телефония / АТС</div><div class="api-desc">Перевод на SIP-очередь отдела расчёта с контекстом: откуда, куда, вес, тип груза.</div></div>
+<div class="api-item"><div class="api-method">Маршрутизация звонков (IVR)</div><div class="api-desc">Routing-профиль: входящие «расчёт» → робот; нестандартный тариф / корп. клиент → менеджер по продажам.</div></div>
+<div class="api-item"><div class="api-method">RAG / База знаний</div><div class="api-desc">Ответы на вопросы об условиях: «от двери до двери», документы, страховка, габаритные грузы.</div></div>
+</div>
+`,`<h4>API-методы</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">CalculateRate(from, to, weight, volume, service_type)</div><div class="api-desc">Расчёт тарифа. Возвращает стоимость, сроки, доступность маршрута.</div><div class="api-params">return: {price, transit_days, is_available: bool}</div></div>
+<div class="api-item"><div class="api-method">TransferCall(SIP_Trunk, Context)</div><div class="api-desc">Перевод на специалиста или международный отдел с данными.</div><div class="api-params">context: {client_name, city_from, city_to, weight, volume, is_international}</div></div>
+<div class="api-item"><div class="api-method">GetTerminalInfo(City) — опционально</div><div class="api-desc">Справочный ответ о режиме без перевода.</div><div class="api-params">return: {schedule_today, address}</div></div>
+</div>
+<h4>SIP-очереди</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">Расчёт РФ</div><div class="api-desc">Расчёт и оформление перевозок по России</div></div>
+<div class="api-item"><div class="api-method">Международный отдел</div><div class="api-desc">Казахстан, Беларусь, Азербайджан, Узбекистан, Китай</div></div>
+<div class="api-item"><div class="api-method">Ручное оформление</div><div class="api-desc">Ошибки сайта, нестандартные запросы</div></div>
+</div>
+`,`<h4>Расчёт и маршрутизация</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Глубина квалификации до перевода: собирать города и вес ДО перевода — или переводить немедленно по слову «рассчитать»?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Очереди SIP: «Расчёт РФ», «Международный», «Ручное оформление» — разные номера или одна группа?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Международные: Казахстан, Беларусь, Азербайджан — отдельная линия или в общий расчёт?</div></li>
+</ul>
+<h4>Контекст и поведение</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">АТС умеет принимать текстовый контекст от робота при переводе (всплывающее окно у менеджера)?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Глубина консультации: подробно рассказывать об услугах (диалог №6) или цель — быстро передать сейлзу?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Голос и персона: мужской/женский? Имя: «голосовой помощник КИТ» или человеческое?</div></li>
+</ul>
+`]},
+
+  q5:{eyebrow:'Робот 5 · Примеры вопросов',title:'Реальные фразы из звонков',robot:'«Оформление перевозки / забор» — новая заявка',simple:true,body:`<div class="modal-simple-body"><h4>Сценарий А — Новая перевозка (диалоги №5, 11, 16)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">1</div><div class="q-text">«Хочу оформить отправку из Уфы в Краснодар, груз 200 кг»<em>Создание накладной через API — опциональный полностью автоматический сценарий</em></div></li>
+<li class="q-item"><div class="q-num">2</div><div class="q-text">«Нам нужно регулярно отправлять детали из Казани в Москву — как оформить договор?»<em>Корпоративный клиент — перевод на менеджера по работе с КК</em></div></li>
+<li class="q-item"><div class="q-num">3</div><div class="q-text">«Вы принимаете опасные грузы? Нужно отправить аккумуляторы»<em>Специальный тип груза — консультация + перевод</em></div></li>
+</ul>
+<h4>Сценарий Б — Забор груза у отправителя</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">4</div><div class="q-text">«Хочу вызвать машину на склад — забрать груз для отправки в Казань»<em>Заявка на экспедирование — отправитель ждёт курьера</em></div></li>
+<li class="q-item"><div class="q-num">5</div><div class="q-text">«Когда приедет машина за грузом? Заявку оформили вчера»<em>Статус заявки на забор — логист звонит отправителю</em></div></li>
+<li class="q-item"><div class="q-num">6</div><div class="q-text">«Нужно, чтобы забрали с ул. Ленина, 42 — сегодня можно?»<em>Срочная заявка на забор</em></div></li>
+</ul>
+<h4>Сценарий В — Технические проблемы</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">7</div><div class="q-text">«На сайте ошибка при оформлении — "произошла неизвестная ошибка"»<em>Баг сайта — ручное оформление через оператора (диалог №17)</em></div></li>
+<li class="q-item"><div class="q-num">8</div><div class="q-text">«Мне обещали перевести на специалиста, но звонок сорвался»<em>Повторный звонок после сбоя — высокий приоритет (диалог №9)</em></div></li>
+</ul>
+<div class="modal-note">Этот робот работает на стыке: часть запросов закрывает через API (CreateOrder), сложные — передаёт менеджеру с контекстом.</div></div>`},
+  i5:{eyebrow:'Робот 5 · Интеграции',title:'Системы, API и открытые вопросы',robot:'«Оформление перевозки / забор» — новая заявка',tabbed:true,tabs:['Необходимые интеграции','API-методы','Открытые вопросы'],panels:[`<h4>Системы</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">CRM / ERP ТК КИТ</div><div class="api-desc">Создание накладных (CreateOrder), проверка статуса заявок на забор, расчёт тарифов.</div></div>
+<div class="api-item"><div class="api-method">SIP-телефония / АТС</div><div class="api-desc">Перевод с контекстом при нестандартных запросах (корпоративные клиенты, опасные грузы, ошибки сайта).</div></div>
+<div class="api-item"><div class="api-method">Маршрутизация звонков (IVR)</div><div class="api-desc">Routing-профиль: входящие «новая перевозка» → робот; корп. клиент / сложный тариф → выделенная очередь менеджеров.</div></div>
+</div>
+`,`<h4>API-методы</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">CalculateRate(from, to, weight, volume)</div><div class="api-desc">Предварительный расчёт тарифа перед созданием заявки.</div><div class="api-params">return: {price, transit_days, is_available: bool}</div></div>
+<div class="api-item"><div class="api-method">CreateOrder(from_city, to_city, weight, volume, sender_phone, pickup_address?)</div><div class="api-desc">Создание накладной через API без участия менеджера.</div><div class="api-params">return: {order_id, track_number, pickup_date?}</div></div>
+<div class="api-item"><div class="api-method">Create_Logistician_Request(order_id, phone, comment)</div><div class="api-desc">Заявка на забор груза — логист согласует дату и время.</div><div class="api-params">params: order_id*, phone*, comment?</div></div>
+<div class="api-item"><div class="api-method">Check_Payment_Status(invoice_id)</div><div class="api-desc">Проверка оплаты по счёту.</div><div class="api-params">return: {paid: bool, amount}</div></div>
+<div class="api-item"><div class="api-method">TransferCall(SIP_Trunk, Context)</div><div class="api-desc">Передача сложных запросов специалисту.</div><div class="api-params">context: {client_name, intent, cargo_type, route}</div></div>
+</div>
+`,`<h4>Оформление заявок</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">CreateOrder: можно дать роботу доступ к созданию накладных через API? Или всегда передавать менеджеру?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Минимальный набор данных для CreateOrder: отправитель, получатель, маршрут, вес — достаточно?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">SLA логистов для забора: через сколько часов машина приедет после заявки?</div></li>
+</ul>
+<h4>Спецкейсы</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Опасные грузы (аккумуляторы, химия): робот сразу переводит или сначала консультирует?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Корпоративные клиенты (постоянные отправители): отдельная очередь или тот же отдел расчёта?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Ошибки сайта (диалог №17): маршрутизировать в техподдержку или к менеджеру по ручному оформлению?</div></li>
+</ul>
+`]},
+
+  q6:{eyebrow:'Робот 6 · Примеры вопросов',title:'Реальные фразы из звонков',robot:'«Претензии и повреждения» — потеря, задержка, порча',simple:true,body:`<div class="modal-simple-body"><h4>Потеря груза или части (диалог №4)</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">1</div><div class="q-text">«В посылке не хватает картриджа — документы были в коробке, их нет»<em>Утеря части — регистрация претензии, е-mail отдела</em></div></li>
+<li class="q-item"><div class="q-num">2</div><div class="q-text">«Груз пришёл, но коробка вскрыта — содержимое неполное»<em>Вскрытая упаковка — акт при получении обязателен</em></div></li>
+<li class="q-item"><div class="q-num">3</div><div class="q-text">«Я получил не тот груз — в ящике чужое содержимое»<em>Пересортица — немедленный перевод в отдел претензий</em></div></li>
+</ul>
+<h4>Повреждения при транспортировке</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">4</div><div class="q-text">«Груз пришёл с видимыми повреждениями — вмятины, разбита техника»<em>Повреждение при перевозке — актирование + претензия</em></div></li>
+<li class="q-item"><div class="q-num">5</div><div class="q-text">«Я принял груз, а потом обнаружил скрытые повреждения — что делать?»<em>Скрытые повреждения — срок подачи претензии</em></div></li>
+</ul>
+<h4>Критическая задержка</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">6</div><div class="q-text">«Груз просрочен на 10 дней — хочу компенсацию за нарушение сроков»<em>Задержка сверх нормы — расчёт неустойки по договору</em></div></li>
+<li class="q-item"><div class="q-num">7</div><div class="q-text">«Груз застрял в Москве уже 2 недели — никто не отвечает»<em>Комплексная проблема — перевод на старшего специалиста</em></div></li>
+</ul>
+<h4>Процедурные вопросы</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">8</div><div class="q-text">«Куда написать претензию? Дайте e-mail»<em>Контакты отдела претензий + инструкция</em></div></li>
+<li class="q-item"><div class="q-num">9</div><div class="q-text">«Какие документы нужны для подачи претензии?»<em>FAQ: накладная, акт, фото, договор</em></div></li>
+<li class="q-item"><div class="q-num">10</div><div class="q-text">«Я подавал претензию 2 недели назад — каков статус?»<em>GetClaimStatus или перевод на специалиста</em></div></li>
+</ul>
+<div class="modal-note">Робот регистрирует претензию и даёт инструкции. Финансовые решения — только через специалиста.</div></div>`},
+  i6:{eyebrow:'Робот 6 · Интеграции',title:'Системы, API и открытые вопросы',robot:'«Претензии и повреждения» — потеря, задержка, порча',tabbed:true,tabs:['Необходимые интеграции','API-методы','Открытые вопросы'],panels:[`<h4>Системы</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">CRM / ERP — Отдел претензий</div><div class="api-desc">Создание претензионных тикетов: тип (утеря/повреждение/задержка), накладная, описание. Статус открытых претензий.</div></div>
+<div class="api-item"><div class="api-method">SIP-телефония / АТС</div><div class="api-desc">Перевод на специалиста с контекстом: тип проблемы, накладная, факты.</div></div>
+<div class="api-item"><div class="api-method">Маршрутизация звонков (IVR)</div><div class="api-desc">Routing-профиль: входящие претензии → робот; горячий случай (потеря, ЧП) → немедленный перевод на старшего специалиста.</div></div>
+<div class="api-item"><div class="api-method">RAG / База знаний</div><div class="api-desc">FAQ: сроки подачи претензий, необходимые документы, контакты, шаблоны актов.</div></div>
+</div>
+`,`<h4>API-методы</h4>
+<div class="api-list">
+<div class="api-item"><div class="api-method">GetOrderInfo(TrackNumber)</div><div class="api-desc">Верификация накладной и данные для претензии (маршрут, вес, стоимость, дата получения).</div><div class="api-params">return: {status, route, weight, delivery_date, declared_value}</div></div>
+<div class="api-item"><div class="api-method">CreateClaim(order_id, claim_type, description, photo_links?)</div><div class="api-desc">Регистрация претензии. Тип: loss/damage/delay.</div><div class="api-params">return: {claim_id, instructions, deadline_days}</div></div>
+<div class="api-item"><div class="api-method">GetClaimStatus(claim_id)</div><div class="api-desc">Статус ранее поданной претензии.</div><div class="api-params">return: {status, assigned_specialist, next_step}</div></div>
+<div class="api-item"><div class="api-method">Create_Logistician_Request(order_id, ..., is_urgent:true)</div><div class="api-desc">Для критических случаев — параллельно с претензией.</div><div class="api-params">params: order_id*, phone*, is_urgent: true</div></div>
+<div class="api-item"><div class="api-method">TransferCall(SIP_Trunk, Context)</div><div class="api-desc">Перевод при финансовых спорах.</div><div class="api-params">context: {claim_type, order_id, damage_description}</div></div>
+</div>
+`,`<h4>Процедура и полномочия</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Полномочия робота: только регистрирует претензию — или может предлагать предварительный размер компенсации?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Форс-мажор: при каких обстоятельствах ТК КИТ освобождается от ответственности — FAQ должен это содержать?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Сроки: максимальный срок подачи претензии по утере/повреждению по вашим договорам?</div></li>
+</ul>
+<h4>Интеграции</h4>
+<ul class="q-list">
+<li class="q-item"><div class="q-num">?</div><div class="q-text">CreateClaim: готов ли API принимать претензии от робота? Или нужна только регистрация через Create_Logistician_Request с тегом «претензия»?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">Фото повреждений: клиент отправляет на e-mail после звонка? Робот называет адрес для загрузки?</div></li>
+<li class="q-item"><div class="q-num">?</div><div class="q-text">GetClaimStatus: статус открытых претензий доступен через API? Или только через специалиста?</div></li>
+</ul>
+`]},
+};
+
+function openModal(key) {
+  const d = MODALS[key]; if (!d) return;
+  document.getElementById('m-eyebrow').textContent = d.eyebrow;
+  document.getElementById('m-title').textContent   = d.title;
+  document.getElementById('m-robot').textContent   = d.robot;
+  const body = document.getElementById('m-body');
+  if (d.tabbed && d.tabs && d.panels) {
+    const tabsHtml = d.tabs.map((t,i) =>
+      '<button class="mtab' + (i===0?' active':'') + '" onclick="switchTab(this,' + i + ',\'m-body\')">' + t + '</button>'
+    ).join('');
+    const panelsHtml = d.panels.map((p,i) =>
+      '<div class="mtab-panel' + (i===0?' active':'') + '" data-panel="' + i + '">' + p + '</div>'
+    ).join('');
+    body.innerHTML = '<div class="modal-tabs">' + tabsHtml + '</div>' + panelsHtml;
+  } else {
+    body.innerHTML = d.body || '';
+  }
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  body.scrollTop = 0;
+}
+function switchTab(btn, idx, bodyId) {
+  const body = document.getElementById(bodyId);
+  body.querySelectorAll('.mtab').forEach(t => t.classList.remove('active'));
+  body.querySelectorAll('.mtab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  body.querySelector('.mtab-panel[data-panel="' + idx + '"]').classList.add('active');
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOnOverlay(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+});
+const sections = document.querySelectorAll('.page-section');
+sections.forEach(s => new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.nav-item a[data-section]').forEach(l => l.classList.remove('active'));
+      const a = document.querySelector('.nav-item a[data-section="' + e.target.id + '"]');
+      if (a) a.classList.add('active');
+    }
+  });
+}, { threshold: 0.25 }).observe(s));
+function filterCards(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b =>
+    b.classList.remove('f-active-all','f-active-in','f-active-p1','f-active-p2','f-active-p3'));
+  if (type==='all') btn.classList.add('f-active-all');
+  if (type==='in')  btn.classList.add('f-active-in');
+  if (type==='p1')  btn.classList.add('f-active-p1');
+  if (type==='p2')  btn.classList.add('f-active-p2');
+  if (type==='p3')  btn.classList.add('f-active-p3');
+  document.querySelectorAll('#cards-grid .rcard').forEach(card => {
+    const show = type==='all'||card.dataset.dir===type||(type==='p1'&&card.dataset.pri==='1')||(type==='p2'&&card.dataset.pri==='2')||(type==='p3'&&card.dataset.pri==='3');
+    card.style.display = show ? '' : 'none';
+  });
+}
+
+/* Voice samples: load table with gender, then play */
+var vtAudio = null;
+var VT_PHRASE = 'Добрый день! Я голосовой ассистент КВИНТ. Чем могу вам помочь?';
+var VT_VOICE_IDS = ['FZGeNF7bE3syeQOynDKC','MQr9U58m1aTKxCxeFTZU','xyu8HSCv1JYrhLx4m8UG','3EuKHIEZbSzrHGNmdYsx','grmBv5c5ZJVFgXpRWyp7','bi0tSQTrp58MDdPUkrEl','IO0VLmDxIb8N5msewtV4','UIaC9QMb6UP5hfzy6uOD'];
+var VT_VOICE_NAMES = {'FZGeNF7bE3syeQOynDKC':'Анна Соколова','MQr9U58m1aTKxCxeFTZU':'Дмитрий Волков','xyu8HSCv1JYrhLx4m8UG':'Мария Иванова','3EuKHIEZbSzrHGNmdYsx':'Михаил Петров','grmBv5c5ZJVFgXpRWyp7':'Елена Козлова','bi0tSQTrp58MDdPUkrEl':'Сергей Николаев','IO0VLmDxIb8N5msewtV4':'Ольга Морозова','UIaC9QMb6UP5hfzy6uOD':'Андрей Кузнецов'};
+
+(function loadVoiceSamples() {
+  var tbody = document.getElementById('voice-samples-tbody');
+  if (!tbody) return;
+  var apiUrl = (window.location.origin || '') + '/api/voices/elevenlabs';
+  fetch(apiUrl).then(function(r){ return r.ok ? r.json() : Promise.reject('Ошибка загрузки'); }).then(function(data) {
+    var genderMap = {};
+    (data.voices || []).forEach(function(v) { genderMap[v.voice_id] = (v.labels && v.labels.gender) || ''; });
+    var genderLabel = function(g) { return g === 'female' ? 'Ж' : g === 'male' ? 'М' : '—'; };
+    tbody.innerHTML = VT_VOICE_IDS.map(function(id, i) {
+      var g = genderLabel(genderMap[id] || '');
+      var name = VT_VOICE_NAMES[id] || '—';
+      return '<tr><td>' + (i+1) + '</td><td>' + name + '</td><td style="text-align:center">' + g + '</td><td style="text-align:center"><button class="link-btn voice-play-btn" data-voice="' + id + '" title="Прослушать">🔊</button></td></tr>';
+    }).join('');
+  }).catch(function() {
+    tbody.innerHTML = VT_VOICE_IDS.map(function(id, i) {
+      var name = VT_VOICE_NAMES[id] || '—';
+      return '<tr><td>' + (i+1) + '</td><td>' + name + '</td><td style="text-align:center">—</td><td style="text-align:center"><button class="link-btn voice-play-btn" data-voice="' + id + '" title="Прослушать">🔊</button></td></tr>';
+    }).join('');
+  });
+})();
+
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.voice-play-btn');
+  if (!btn) return;
+  var voiceId = btn.dataset.voice;
+  if (!voiceId) return;
+    if (vtAudio && !vtAudio.paused) {
+      vtAudio.pause();
+      vtAudio.currentTime = 0;
+      vtAudio = null;
+      document.querySelectorAll('.voice-play-btn').forEach(function(b){ b.classList.remove('playing'); });
+      return;
+    }
+    document.querySelectorAll('.voice-play-btn').forEach(function(b){ b.classList.remove('playing'); b.classList.add('loading'); });
+    var apiUrl = (window.location.origin || '') + '/api/voices/tts';
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ voiceId: voiceId, text: VT_PHRASE })
+    }).then(function(r) {
+      if (!r.ok) {
+        return r.json().catch(function(){ return {}; }).then(function(data){ throw new Error(data.error || 'Ошибка ' + r.status); });
+      }
+      return r.blob();
+    }).then(function(blob) {
+      var url = URL.createObjectURL(blob);
+      vtAudio = new Audio(url);
+      vtAudio.onended = function() {
+        URL.revokeObjectURL(url);
+        vtAudio = null;
+        document.querySelectorAll('.voice-play-btn').forEach(function(b){ b.classList.remove('playing','loading'); });
+      };
+      vtAudio.onerror = function() {
+        URL.revokeObjectURL(url);
+        vtAudio = null;
+        document.querySelectorAll('.voice-play-btn').forEach(function(b){ b.classList.remove('playing','loading'); });
+      };
+      vtAudio.play();
+      btn.classList.remove('loading');
+      btn.classList.add('playing');
+    }).catch(function(err) {
+      console.error('TTS error:', err);
+      document.querySelectorAll('.voice-play-btn').forEach(function(b){ b.classList.remove('loading'); });
+      var msg = err.message || 'Неизвестная ошибка';
+      if (err.message === 'Failed to fetch' || err.message === 'NetworkError') {
+        msg = 'Нет связи с сервером. Убедитесь, что бэкенд запущен на ' + (window.location.origin || 'localhost:3000');
+      }
+      alert('Не удалось загрузить аудио. ' + msg);
+    });
+});
+
+</script>
+
+<!-- ── VOICE MODAL ── -->
+<div class="voice-modal-overlay" id="voice-modal-overlay" onclick="if(event.target===this)closeVoiceModal()">
+  <div class="voice-modal">
+    <div class="voice-modal-header">
+      <div class="voice-modal-title">Робот «Где мой груз?»</div>
+      <button class="voice-modal-close" onclick="closeVoiceModal()">✕</button>
+    </div>
+    <div class="voice-modal-body">
+      <div class="voice-widget-area">
+        <div class="voice-orb-container" id="v-orb" data-state="idle" onclick="handleVoiceOrbClick()">
+          <img src="circle_1.png" alt="" class="voice-orb-img" id="v-orb-img">
+          <span class="voice-orb-label" id="v-orb-label">Нажмите<br>чтобы начать</span>
+        </div>
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
+          <div class="voice-transcript" id="v-transcript">
+            <div id="v-transcript-content">
+              <div class="vt-empty">Нажмите на сферу, чтобы начать диалог с роботом...</div>
+            </div>
+          </div>
+          <div class="voice-status">
+            <div class="voice-status-dot" id="v-status-dot"></div>
+            <div class="voice-status-text" id="v-status-text">Готов к разговору</div>
+          </div>
+        </div>
+      </div>
+      <div class="voice-table-area">
+        <div class="voice-table-title">Данные для диалога с роботом «Где мой груз?»</div>
+        <div class="voice-table-wrap">
+          <table>
+            <thead><tr>
+              <th>Трек-номер</th><th>Телефон получателя</th><th>Отправитель</th><th>Получатель</th><th>Маршрут</th><th>Статус</th><th>Дата прибытия</th><th>Терминал</th><th>К оплате, ₽</th>
+            </tr></thead>
+            <tbody>
+              <tr><td>012-019-16-96</td><td>+7 913 700 12 34</td><td>ООО «АлмаТранс»</td><td>Грачёв Дмитрий И.</td><td>Алматы → Абакан</td><td><span class="voice-status-chip vs-transit">В пути</span></td><td>19 марта</td><td>Абакан, ул. Ленина, 15</td><td>2 850</td></tr>
+              <tr><td>012-031-44-12</td><td>+7 923 456 78 90</td><td>ИП Панова О.В.</td><td>Семёнов Алексей П.</td><td>Новосибирск → Красноярск</td><td><span class="voice-status-chip vs-delayed">Задержан</span></td><td>—</td><td>Красноярск, пр. Мира, 102</td><td>1 640</td></tr>
+              <tr><td>012-055-88-01</td><td>+7 912 345 67 89</td><td>ЗАО «СтройКом»</td><td>Рябова Ирина С.</td><td>Москва → Сургут</td><td><span class="voice-status-chip vs-arrived">Прибыл</span></td><td>15 марта</td><td>Сургут, ул. Энтузиастов, 7</td><td>5 120</td></tr>
+              <tr><td>012-077-22-55</td><td>+7 917 890 12 34</td><td>ООО «МегаОпт»</td><td>Козлов Виктор А.</td><td>Екатеринбург → Казань</td><td><span class="voice-status-chip vs-transit">В пути</span></td><td>20 марта</td><td>Казань, ул. Восстания, 44</td><td>3 390</td></tr>
+              <tr><td>012-090-33-17</td><td>+7 918 234 56 78</td><td>ИП Фёдоров М.Н.</td><td>Белова Анна К.</td><td>Уфа → Краснодар</td><td><span class="voice-status-chip vs-arrived">Прибыл</span></td><td>14 марта</td><td>Краснодар, ул. Красная, 88</td><td>4 210</td></tr>
+              <tr><td>012-104-51-29</td><td>+7 926 678 90 12</td><td>ООО «ТехСнаб»</td><td>Миронов Сергей О.</td><td>Новосибирск → Солнечногорск</td><td><span class="voice-status-chip vs-storage">На хранении</span></td><td>12 марта</td><td>Солнечногорск, Сев. шоссе, 3</td><td>6 880</td></tr>
+              <tr><td>012-118-64-03</td><td>+7 913 111 22 33</td><td>ИП Жукова Т.П.</td><td>Николаев Борис В.</td><td>Алматы → Новосибирск</td><td><span class="voice-status-chip vs-transit">В пути</span></td><td>22 марта</td><td>Новосибирск, ул. Советская, 12</td><td>2 100</td></tr>
+              <tr><td>012-133-70-44</td><td>+7 924 555 66 77</td><td>ООО «АгроПром»</td><td>Тихонова Марина Д.</td><td>Самара → Хабаровск</td><td><span class="voice-status-chip vs-delayed">Задержан</span></td><td>—</td><td>Хабаровск, ул. К. Маркса, 91</td><td>8 500</td></tr>
+              <tr><td>012-147-85-67</td><td>+7 922 188 30 45</td><td>ИП Кузьмин Р.А.</td><td>Захарова Елена Н.</td><td>Тюмень → Магнитогорск</td><td><span class="voice-status-chip vs-arrived">Прибыл</span></td><td>16 марта</td><td>Магнитогорск, пр. Ленина, 211</td><td>1 950</td></tr>
+              <tr><td>012-160-92-88</td><td>+7 914 333 44 55</td><td>ООО «РусТорг»</td><td>Орлов Павел С.</td><td>Москва → Владивосток</td><td><span class="voice-status-chip vs-transit">В пути</span></td><td>28 марта</td><td>Владивосток, ул. Светланская, 33</td><td>12 300</td></tr>
+              <tr><td>012-170-88-65</td><td>+7 905 777 88 99</td><td>ИП Попов И.Р.</td><td>Степанова Ольга В.</td><td>Тюмень → Москва</td><td><span class="voice-status-chip vs-delivered">Выдан</span></td><td>15 марта</td><td>Москва (Котельники), Яничкин пр., 4</td><td>оплачен</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="voice-hint">
+          <strong>Примеры вопросов роботу:</strong> «Где груз 012-090-33-17?» · «Груз 012-104-51-29 — сколько за хранение?» · «Почему 012-133-70-44 задержан?» · «012-055-88-01 — можно доставку до двери?» · «Я получил груз 012-170-88-65, но есть повреждения»
+        </div>
+        <div class="voice-faq">
+          <div class="voice-faq-title">Часто задаваемые вопросы</div>
+          <div class="voice-faq-list">
+            <div class="voice-faq-item">
+              <div class="voice-faq-q">Как найти мой груз без номера накладной?</div>
+              <div class="voice-faq-a">Груз можно найти по номеру телефона получателя. Если по номеру найдено несколько отправлений — нужно уточнить город назначения или номер накладной.</div>
+            </div>
+            <div class="voice-faq-item">
+              <div class="voice-faq-q">Что такое срок бесплатного хранения?</div>
+              <div class="voice-faq-a">ТК «КИТ» предоставляет 3 дня бесплатного хранения после прибытия груза на терминал. После истечения срока начисляется от 50 рублей в сутки.</div>
+            </div>
+            <div class="voice-faq-item">
+              <div class="voice-faq-q">Можно ли получить груз другому человеку?</div>
+              <div class="voice-faq-a">Да. Для получения нужен паспорт и нотариально заверенная доверенность от владельца груза.</div>
+            </div>
+            <div class="voice-faq-item">
+              <div class="voice-faq-q">Что делать, если статус груза не обновлялся несколько дней?</div>
+              <div class="voice-faq-a">Это может указывать на задержку в пути. Рекомендуется соединить клиента со специалистом для выяснения причин.</div>
+            </div>
+            <div class="voice-faq-item">
+              <div class="voice-faq-q">Что делать, если груз пришёл с повреждениями?</div>
+              <div class="voice-faq-a">Необходимо составить акт на месте получения, не покидая склад. Затем обратиться в отдел претензий: claim@tk-kit.ru.</div>
+            </div>
+            <div class="voice-faq-item">
+              <div class="voice-faq-q">Как отменить заказанную доставку до двери?</div>
+              <div class="voice-faq-a">Отмена возможна до выезда курьера без штрафа. После выезда может начисляться стоимость холостого прогона.</div>
+            </div>
+            <div class="voice-faq-item">
+              <div class="voice-faq-q">Форматы номеров накладных ТК КИТ</div>
+              <div class="voice-faq-a">Основной формат — цифровой: XXX-XXX-XX-XX, например 012-019-16-96. Также встречаются буквенно-цифровые коды: УХТ-КАЗ, Е7-ТЮМ, 21EGI.</div>
+            </div>
+            <div class="voice-faq-item">
+              <div class="voice-faq-q">Можно ли заказать доставку до двери?</div>
+              <div class="voice-faq-a">Доставка до двери доступна с большинства терминалов после прибытия груза. Стоимость зависит от веса и адреса. Логист перезванивает для уточнения времени.</div>
+            </div>
+            <div class="voice-faq-item">
+              <div class="voice-faq-q">Сколько стоит хранение сверх бесплатного срока?</div>
+              <div class="voice-faq-a">От 50 рублей в сутки с первого дня после окончания бесплатного хранения. Точная ставка зависит от терминала и объёма груза.</div>
+            </div>
+            <div class="voice-faq-item">
+              <div class="voice-faq-q">Как долго идёт груз из Москвы на Дальний Восток?</div>
+              <div class="voice-faq-a">Стандартный срок Москва — Владивосток / Хабаровск: 10–12 рабочих дней. Точные сроки зависят от маршрута и загруженности.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+    /* ── API config — points to Express backend on port 3000 ── */
+    var API_HOST = 'http://localhost:3000';
+    var API_BASE_URL = API_HOST + '/api/timeweb';
+    var _api = {
+        getSignedUrl: function(agentId) {
+            return fetch(API_BASE_URL + '/conversation/signed-url', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ agent_id: agentId })
+            }).then(function(r){ if(!r.ok) throw new Error('signed-url failed'); return r.json(); });
+        },
+        getStreamUrl: function() {
+            return 'ws://localhost:3000/api/stream';
+        }
+    };
+
+    /* ── Config (matches voice-widget.html exactly) ── */
+    var ROBOT_TYPE = 'tk_kit_cargo';
+    var ROTATE_SPEED = 360 / 22;
+    var MIC_GAIN = 1.4;
+    var SAMPLE_RATE = 16000;
+    var MAX_PULSE = 0.055;
+    var PULSE_FREQ = 4;
+
+    /* ── DOM refs ── */
+    var vOrb = document.getElementById('v-orb');
+    var vOrbImg = document.getElementById('v-orb-img');
+    var vOrbLabel = document.getElementById('v-orb-label');
+    var navOrbImg = document.querySelector('.nav-orb img');
+    var navOrbText = document.querySelector('.nav-orb-text');
+    var vTranscript = document.getElementById('v-transcript');
+    var vContent = document.getElementById('v-transcript-content');
+    var vStatusDot = document.getElementById('v-status-dot');
+    var vStatusText = document.getElementById('v-status-text');
+
+    /* ── State ── */
+    var audioCtx = null, masterGain = null, analyser = null, freqData = null;
+    var conv = null, audioQueue = [], isPlaying = false, nextPlayAt = 0, activeSources = 0;
+    var convState = 'idle', dialogActive = false, wState = 'idle';
+    var orbAngle = 0, baseScale = 1, smoothScale = 1, pulseAmp = 0, orbAmp = 0, rotSpeed = ROTATE_SPEED;
+    var lastTs = 0;
+
+    var COLORS = {
+        idle:       { r: 130, g: 110, b: 200 },
+        connecting: { r: 140, g: 140, b: 255 },
+        listening:  { r: 80,  g: 180, b: 255 },
+        speaking:   { r: 155, g: 90,  b: 255 }
+    };
+    var glowColor = { r: 130, g: 110, b: 200 };
+    var STATUS_LABELS = { idle:'Готов к разговору', connecting:'Подключение...', listening:'Слушаю вас...', speaking:'Робот говорит...' };
+
+    var NAV_ORB_LABELS = { idle:'Задайте<br>вопрос', connecting:'Подклю-<br>чение...', listening:'Слушаю<br>вас...', speaking:'Робот<br>говорит...' };
+    function updateStatus() {
+        vStatusDot.className = 'voice-status-dot ' + convState;
+        vStatusText.textContent = STATUS_LABELS[convState] || STATUS_LABELS.idle;
+        vOrb.dataset.state = convState;
+        if (navOrbText) navOrbText.innerHTML = NAV_ORB_LABELS[convState] || NAV_ORB_LABELS.idle;
+    }
+
+    /* ── Modal open/close ── */
+    window.openVoiceModal = function() {
+        document.getElementById('voice-modal-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    };
+    var NAV_ROBOT_ID = 'tk_kit_faq';
+    window.openVoiceAndStart = function() {
+        if (wState === 'idle') startDialog(NAV_ROBOT_ID);
+        else if (wState === 'active') stopDialog();
+    };
+    window.closeVoiceModal = function() {
+        if (wState === 'active' || wState === 'connecting') stopDialog();
+        document.getElementById('voice-modal-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    };
+    window.handleVoiceOrbClick = function() {
+        if (wState === 'idle') {
+            startDialog();
+        } else if (wState === 'active') {
+            stopDialog();
+        }
+    };
+
+    /* ── Start / Stop (identical logic to voice-widget.html) ── */
+    function startDialog(agentId) {
+        var rid = agentId || ROBOT_TYPE;
+        wState = 'connecting';
+        convState = 'connecting';
+        dialogActive = false;
+        baseScale = 1.35;
+        updateStatus();
+
+        _api.getSignedUrl(rid).then(function() {
+            var wsUrl = _api.getStreamUrl();
+            return connectWS(rid, wsUrl);
+        }).catch(function(err) {
+            console.error('Connection error:', err);
+            wState = 'idle';
+            convState = 'idle';
+            baseScale = 1;
+            updateStatus();
+        });
+    }
+
+    function stopDialog() {
+        if (conv) {
+            try { conv.processor && conv.processor.disconnect(); } catch(e){}
+            try { conv.silentGain && conv.silentGain.disconnect(); } catch(e){}
+            try { conv.source && conv.source.disconnect(); } catch(e){}
+            if (conv.ws && conv.ws.readyState === WebSocket.OPEN) {
+                try { conv.ws.close(1000, 'user'); } catch(e){}
+            }
+            try { conv.stream && conv.stream.getTracks().forEach(function(t){ t.stop(); }); } catch(e){}
+        }
+        cleanup();
+        baseScale = 1;
+        wState = 'idle';
+        convState = 'idle';
+        dialogActive = false;
+        updateStatus();
+    }
+
+    function cleanup() {
+        freqData = null; masterGain = null; analyser = null; conv = null;
+        audioQueue = []; isPlaying = false; nextPlayAt = 0; activeSources = 0;
+        if (audioCtx) { try { audioCtx.close(); } catch(e){} audioCtx = null; }
+    }
+
+    /* ── Transcript (typewriter, identical to voice-widget.html) ── */
+    var twQueue = [], twBusy = false;
+    function addTranscript(speaker, text) {
+        twQueue.push({ speaker: speaker, text: text });
+        if (!twBusy) processTW();
+    }
+    function processTW() {
+        if (!twQueue.length) { twBusy = false; return; }
+        twBusy = true;
+        var item = twQueue.shift();
+        var empty = vContent.querySelector('.vt-empty');
+        if (empty) empty.remove();
+        var msg = document.createElement('div');
+        msg.className = 'vt-msg ' + (item.speaker === 'Вы' ? 'user' : 'agent');
+        var sp = document.createElement('div');
+        sp.className = 'vt-speaker';
+        sp.textContent = item.speaker;
+        var tx = document.createElement('div');
+        msg.appendChild(sp); msg.appendChild(tx); vContent.appendChild(msg);
+        vTranscript.scrollTop = vTranscript.scrollHeight;
+        var chars = Array.from(item.text);
+        var delay = Math.max(18, Math.min(40, 2000 / chars.length));
+        var i = 0;
+        (function typeChar() {
+            if (i < chars.length) {
+                tx.textContent += chars[i];
+                if (i % 3 === 0) vTranscript.scrollTop = vTranscript.scrollHeight;
+                i++;
+                setTimeout(typeChar, delay);
+            } else {
+                vTranscript.scrollTop = vTranscript.scrollHeight;
+                processTW();
+            }
+        })();
+    }
+
+    /* ── WebSocket + Audio pipeline (identical to voice-widget.html) ── */
+    function connectWS(robotType, wsUrl) {
+        return navigator.mediaDevices.getUserMedia({
+            audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 }
+        }).then(function(stream) {
+            var ws = new WebSocket(wsUrl);
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            masterGain = audioCtx.createGain();
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 256;
+            analyser.smoothingTimeConstant = 0.8;
+            masterGain.connect(analyser);
+            analyser.connect(audioCtx.destination);
+            freqData = new Uint8Array(analyser.frequencyBinCount);
+            conv = { robotType: robotType, ws: ws, stream: stream };
+
+            ws.addEventListener('open', function() {
+                ws.send(JSON.stringify({ type: 'init', agent_id: robotType }));
+            });
+            ws.addEventListener('message', function(event) {
+                try {
+                    if (event.data instanceof Blob) {
+                        event.data.arrayBuffer().then(function(ab){ playBinary(ab); });
+                        return;
+                    }
+                    if (event.data instanceof ArrayBuffer) { playBinary(event.data); return; }
+                    var data = JSON.parse(event.data);
+                    switch (data.type) {
+                        case 'connected':
+                            wState = 'active'; convState = 'listening'; dialogActive = true;
+                            updateStatus();
+                            if (conv) startSendingAudio(ws, stream);
+                            break;
+                        case 'audio':
+                            var b64 = (data.audio_event && data.audio_event.audio_base_64) || data.audio_base_64;
+                            if (b64) playBase64(b64);
+                            break;
+                        case 'user_transcript':
+                            var ut = data.user_transcription_event && data.user_transcription_event.user_transcript;
+                            if (ut) addTranscript('Вы', ut);
+                            break;
+                        case 'agent_response':
+                            var ar = (data.agent_response_event && data.agent_response_event.agent_response) || data.agent_response;
+                            if (ar) addTranscript('Робот', ar);
+                            break;
+                        case 'ping':
+                            ws.send(JSON.stringify({ type:'pong', event_id: (data.ping_event && data.ping_event.event_id) || data.event_id || Date.now() }));
+                            break;
+                        case 'error':
+                            console.error('Server error:', data.message);
+                            break;
+                    }
+                } catch(err) { console.error('Message error:', err); }
+            });
+            ws.addEventListener('close', function() {
+                cleanup();
+                wState = 'idle'; convState = 'idle'; dialogActive = false;
+                baseScale = 1;
+                updateStatus();
+            });
+            ws.addEventListener('error', function() { console.error('WebSocket error'); });
+        });
+    }
+
+    function startSendingAudio(ws, stream) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        var source = audioCtx.createMediaStreamSource(stream);
+        var processor = audioCtx.createScriptProcessor(4096, 1, 1);
+        var silentGain = audioCtx.createGain();
+        silentGain.gain.value = 0;
+        source.connect(processor);
+        processor.connect(silentGain);
+        silentGain.connect(audioCtx.destination);
+        processor.onaudioprocess = function(e) {
+            if (!conv || ws.readyState !== WebSocket.OPEN) return;
+            var input = e.inputBuffer.getChannelData(0);
+            var resampled = resample(input, audioCtx.sampleRate, SAMPLE_RATE);
+            var pcm = new Int16Array(resampled.length);
+            for (var i = 0; i < resampled.length; i++) {
+                var s = Math.max(-1, Math.min(1, resampled[i] * MIC_GAIN));
+                pcm[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+            }
+            var bin = '';
+            var bytes = new Uint8Array(pcm.buffer);
+            for (var j = 0; j < bytes.byteLength; j++) bin += String.fromCharCode(bytes[j]);
+            ws.send(JSON.stringify({ type: 'user_audio_chunk', user_audio_chunk: btoa(bin) }));
+        };
+        conv.source = source; conv.processor = processor; conv.silentGain = silentGain;
+    }
+
+    function resample(input, inRate, outRate) {
+        if (inRate === outRate) return input;
+        var ratio = inRate / outRate;
+        var len = Math.round(input.length / ratio);
+        var out = new Float32Array(len);
+        for (var i = 0; i < len; i++) {
+            var si = i * ratio, idx = Math.floor(si), frac = si - idx;
+            out[i] = input[idx] * (1 - frac) + input[Math.min(idx + 1, input.length - 1)] * frac;
+        }
+        return out;
+    }
+
+    function playBase64(b64) {
+        var bin = atob(b64);
+        var bytes = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        playBinary(bytes.buffer);
+    }
+
+    function playBinary(arrayBuffer) {
+        if (!audioCtx) return;
+        var int16 = new Int16Array(arrayBuffer.byteLength / 2);
+        var dv = new DataView(arrayBuffer);
+        for (var i = 0; i < int16.length; i++) int16[i] = dv.getInt16(i * 2, true);
+        var f32 = new Float32Array(int16.length);
+        for (var j = 0; j < int16.length; j++) f32[j] = int16[j] / 32768.0;
+        var buf = audioCtx.createBuffer(1, f32.length, SAMPLE_RATE);
+        buf.getChannelData(0).set(f32);
+        audioQueue.push({ buffer: buf, duration: buf.duration });
+        if (!isPlaying) playNext();
+    }
+
+    function playNext() {
+        if (!audioQueue.length) {
+            isPlaying = false; nextPlayAt = 0;
+            if (conv) { convState = 'listening'; updateStatus(); }
+            return;
+        }
+        isPlaying = true;
+        var item = audioQueue.shift();
+        var src = audioCtx.createBufferSource();
+        src.buffer = item.buffer;
+        src.connect(masterGain || audioCtx.destination);
+        var now = audioCtx.currentTime;
+        var t = Math.max(now, nextPlayAt);
+        activeSources++;
+        convState = 'speaking';
+        updateStatus();
+        src.start(t);
+        nextPlayAt = t + item.duration;
+        src.onended = function() {
+            activeSources = Math.max(0, activeSources - 1);
+            if (activeSources === 0 && audioQueue.length === 0 && conv) { convState = 'listening'; updateStatus(); }
+            playNext();
+        };
+    }
+
+    /* ── Animation loop (EXACT replica of voice-widget.html) ── */
+    function loop(ts) {
+        requestAnimationFrame(loop);
+        if (!lastTs) { lastTs = ts; return; }
+        var dt = Math.min((ts - lastTs) / 1000, 0.05);
+        lastTs = ts;
+
+        var raw = 0;
+        if (analyser && freqData) {
+            analyser.getByteFrequencyData(freqData);
+            var sum = 0;
+            for (var i = 0; i < freqData.length; i++) sum += freqData[i];
+            raw = Math.min(sum / (freqData.length * 255), 1);
+        }
+
+        var tc = COLORS[convState] || COLORS.idle;
+        glowColor.r += (tc.r - glowColor.r) * 0.04;
+        glowColor.g += (tc.g - glowColor.g) * 0.04;
+        glowColor.b += (tc.b - glowColor.b) * 0.04;
+        var cr = Math.round(glowColor.r);
+        var cg = Math.round(glowColor.g);
+        var cb = Math.round(glowColor.b);
+
+        if (dialogActive) {
+            rotSpeed += (0 - rotSpeed) * 0.03;
+            if (rotSpeed < 0.3) rotSpeed = 0;
+            pulseAmp += (MAX_PULSE - pulseAmp) * 0.025;
+            var al = raw > orbAmp ? 0.18 : 0.05;
+            orbAmp += (raw - orbAmp) * al;
+        } else {
+            pulseAmp += (0 - pulseAmp) * 0.02;
+            if (pulseAmp < 0.001) pulseAmp = 0;
+            if (pulseAmp === 0) rotSpeed += (ROTATE_SPEED - rotSpeed) * 0.02;
+            orbAmp += (0 - orbAmp) * 0.05;
+        }
+
+        orbAngle = (orbAngle + rotSpeed * dt) % 360;
+        smoothScale += (baseScale - smoothScale) * 0.05;
+
+        var pulse = pulseAmp > 0.001
+            ? 1 + Math.sin(ts / 1000 * (2 * Math.PI / PULSE_FREQ)) * pulseAmp
+            : 1;
+        var audioScale = dialogActive ? (1 + orbAmp * 0.08) : 1;
+        var finalScale = Math.min(smoothScale * pulse * audioScale, 1.55);
+
+        vOrbImg.style.transform = 'rotate(' + orbAngle.toFixed(1) + 'deg) scale(' + finalScale.toFixed(4) + ')';
+        vOrbLabel.style.transform = 'translate(-50%, -50%) scale(' + smoothScale.toFixed(4) + ')';
+
+        if (navOrbImg) {
+            navOrbImg.style.transform = 'rotate(' + orbAngle.toFixed(1) + 'deg) scale(' + finalScale.toFixed(4) + ')';
+        }
+
+        if (dialogActive || orbAmp > 0.01) {
+            var a = orbAmp;
+            var br = (1 + a * 0.18).toFixed(2);
+            var g1 = Math.round(16 + a * 14);
+            var g1a = (0.30 + a * 0.20).toFixed(2);
+            var g2 = Math.round(40 + a * 25);
+            var g2a = (0.14 + a * 0.14).toFixed(2);
+            var g3 = Math.round(70 + a * 40);
+            var g3a = (0.06 + a * 0.08).toFixed(2);
+            var filterStr = 'brightness(' + br + ') drop-shadow(0 0 ' + g1 + 'px rgba(' + cr + ',' + cg + ',' + cb + ',' + g1a + ')) drop-shadow(0 0 ' + g2 + 'px rgba(' + cr + ',' + cg + ',' + cb + ',' + g2a + ')) drop-shadow(0 0 ' + g3 + 'px rgba(' + cr + ',' + cg + ',' + cb + ',' + g3a + '))';
+            vOrbImg.style.filter = filterStr;
+            if (navOrbImg) navOrbImg.style.filter = filterStr;
+        } else if (wState === 'connecting') {
+            var connFilter = 'brightness(1.05) drop-shadow(0 0 14px rgba(' + cr + ',' + cg + ',' + cb + ',0.30)) drop-shadow(0 0 40px rgba(' + cr + ',' + cg + ',' + cb + ',0.15))';
+            vOrbImg.style.filter = connFilter;
+            if (navOrbImg) navOrbImg.style.filter = connFilter;
+        } else {
+            if (vOrbImg.style.filter) vOrbImg.style.filter = '';
+            if (navOrbImg && navOrbImg.style.filter) navOrbImg.style.filter = '';
+        }
+    }
+
+    requestAnimationFrame(loop);
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.getElementById('voice-modal-overlay').classList.contains('open')) {
+            closeVoiceModal();
+        }
+    });
+})();
+</script>
+</body>
+</html>
